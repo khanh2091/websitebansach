@@ -100,21 +100,20 @@
 
             <ul class="nav flex-column pt-3 pt-md-0">
                 <li class="nav-item">
-                    <a href="#" class="nav-link d-flex align-items-center">
+                    <router-link class="nav-link" :class="[{active: $route.name == 'home'}]" :to="{name: 'home'}">
                         <span class="sidebar-icon">
-                            <img
-                                :src="'img/brand/light.svg'"
+                            <img :src="'img/brand/light.svg'"
                                 height="20"
                                 width="20"
                                 alt="Volt Logo"
                             />
                         </span>
                         <span class="mt-1 ms-1 sidebar-text">BOOK STORE</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <router-link class="nav-link" :class="[{active: $route.name == 'home'}]" :to="{name: 'home'}">
                         <span class="sidebar-icon">
                             <svg
                                 class="icon icon-xs me-2"
@@ -131,7 +130,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Dashboard</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <hr class="sidebar-divider" />
@@ -231,7 +230,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <router-link class="nav-link" :class="[{active: $route.name === 'author'}]" :to="{name: 'author'}">
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +248,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Tác giả</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="nav-item">

@@ -20,3 +20,4 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/admin', [App\Http\Controllers\Testcontroller::class, 'controllMethod'])->name('admin');
 Route::get('/home', [App\Http\Controllers\TestController::class, 'index'])->name('home');
+// Route::get('/admin/{any}', [App\Http\Controllers\AppController::class, 'index'])->where('any', '.*');
