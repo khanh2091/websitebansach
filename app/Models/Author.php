@@ -9,12 +9,12 @@ class Author extends Model
 {
     use HasFactory;
     protected $table = 'authors';
-    protected $fillable = ['firstname', 'lastname', 'biography'];
+    protected $fillable = ['ma', 'firstname', 'lastname', 'biography'];
     protected $appends = ['fullname'];
 
     public function products()
     {
-        return $this->hasMany('App\Models\Product', 'author_id', 'id');
+        return $this->hasMany('App\Models\Product', 'author_id', 'ma');
     }
 
     public static function getCountAuthor()

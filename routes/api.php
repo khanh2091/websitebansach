@@ -17,4 +17,4 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('author', [App\Http\Controllers\AuthorController::class, 'index'])->name('get-list-author');
+Route::get('admin/author', [App\Http\Controllers\AuthorController::class, 'index'])->name('get-list-author');

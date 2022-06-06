@@ -16,8 +16,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Auth::routes();
-Route::get('/admin', [App\Http\Controllers\Testcontroller::class, 'controllMethod'])->name('admin');
 Route::get('/home', [App\Http\Controllers\TestController::class, 'index'])->name('home');
+Route::get('api/author', [App\Http\Controllers\api\AuthorController::class, 'index'])->name('get-list-author');
+Route::post('admin/author/api/addauthor', [App\Http\Controllers\api\AuthorController::class, 'store'])->name('add-author');
+Route::post('admin/api/editauthor/{ma}', [App\Http\Controllers\api\AuthorController::class, 'update'])->name('update-author');
+Route::delete('admin/api/author/{ma}', [App\Http\Controllers\api\AuthorController::class, 'destroy'])->name('delete-author');
+Auth::routes();
+Route::get('/admin/{any?}', function() {
+    return view('admin.index');
+  })->where('any', '.*');
+
+
+// Route::any('/admin', [App\Http\Controllers\Testcontroller::class, 'controllMethod'])->name('admin');
+
 // Route::get('/admin/{any}', [App\Http\Controllers\AppController::class, 'index'])->where('any', '.*');
