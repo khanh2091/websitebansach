@@ -22,7 +22,14 @@ class AuthorController extends Controller
     public function index()
     {
         //
-        return AuthorResoure::collection(Author::orderBy('ma')->get());
+        $Paginate = request('paginate',10);
+        $author = Author::orderBy('ma')->paginate($Paginate);
+        // if (isset($paginate)) {
+        //     $author = Author::orderBy('ma')->paginate(3);
+        // } else {
+        //     $author = Author::orderBy('ma')->get();
+        // }
+        return AuthorResoure::collection($author);
     }
 
     /**

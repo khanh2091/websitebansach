@@ -102,7 +102,7 @@
                 <li class="nav-item">
                     <router-link class="nav-link" :class="[{active: $route.name == 'home'}]" :to="{name: 'home'}">
                         <span class="sidebar-icon">
-                            <img :src="'img/brand/light.svg'"
+                            <img :src="'/img/brand/light.svg'"
                                 height="20"
                                 width="20"
                                 alt="Volt Logo"

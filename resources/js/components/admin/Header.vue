@@ -84,7 +84,7 @@
                                     <img
                                         class="avatar rounded-circle"
                                         alt="Image placeholder"
-                                        :src="'img/team/profile-picture-1.jpg'"
+                                        :src="'/img/team/profile-picture-1.jpg'"
                                     />
                                     <div
                                         class="media-body ms-2 text-dark align-items-center d-none d-lg-block"

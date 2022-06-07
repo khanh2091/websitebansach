@@ -44,10 +44,10 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <!-- Volt JS -->
-<script src="{{ asset('admin/js/volt.js') }}"></script>
+<script src="{{ asset('js/volt.js') }}"></script>
 
 
 <!-- Custom JS -->
-<script src="{{ asset('admin/js/custom.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 @stack('scripts')

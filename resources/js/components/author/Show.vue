@@ -58,7 +58,75 @@
                     Danh sách tác giả
                 </h6>
             </div>
+            <div
+                class="d-flex justify-content-between align-content-center mb-2"
+            >
+                <div class="d-flex">
+                    <div>
+                        <div
+                            class="d-flex align-items-center ml-4"
+                            style="padding: 20px"
+                        >
+                            <select
+                                id="paginate"
+                                v-model="paginate"
+                                class="form-control form-control-sm"
+                            >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                            </select>
+                            <label
+                                for="paginate"
+                                class="text-nowrap mr-2 mb-0"
+                                style="margin-left: 10px"
+                            >
+                               tác giả trên trang</label
+                            >
+                        </div>
+                    </div>
 
+                    <div>
+                        <div class="dropdown ml-4">
+                            <!-- <button
+                                v-if="checked.length > 0"
+                                class="btn btn-secondary dropdown-toggle"
+                                data-toggle="dropdown"
+                            >
+                                With Checked ({{ checked.length }})
+                            </button> -->
+                            <div class="dropdown-menu">
+                                <!-- <a
+                                    href="#"
+                                    onclick="confirm('Are you sure you wanna delete this Record?') || event.stopImmediatePropagation()"
+                                    class="dropdown-item"
+                                    type="button"
+                                    @click.prevent="deleteRecords"
+                                >
+                                    Delete
+                                </a>
+
+                                <a
+                                    :href="url"
+                                    class="dropdown-item"
+                                    type="button"
+                                >
+                                    Export
+                                </a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="padding: 20px">
+                    <input
+                        v-model.lazy="search"
+                        type="search"
+                        class="form-control"
+                        placeholder="Tìm kiếm..."
+                    />
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table
@@ -79,14 +147,14 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="author in authors"
+                                v-for="author in authors.data"
                                 v-blind:key="author.ma"
                                 :key="author.ma"
                             >
                                 <td>{{ author.ma }}</td>
 
                                 <td>
-                                   {{ author.firstname }} {{ author.lastname }} 
+                                    {{ author.firstname }} {{ author.lastname }}
                                 </td>
                                 <td>{{ author.biography }}</td>
                                 <td>{{ author.created_at }}</td>
@@ -95,26 +163,16 @@
                                     <div
                                         class="d-flex justify-content-center align-items-center"
                                     >
-                                        <button
-                                            type="button"
-                                            class="btn btn-primary btn-sm float-left btn-circle"
-                                            data-toggle="tooltip"
-                                            title="Xem"
-                                            data-placement="bottom"
-                                            @click="showAuthor(author.ma)"
-                                        >
-                                            <i class="fas fa-info-circle"></i>
-                                        </button>
-                                        <button
+                                        
+                                        <b-button @click="showEditAuthors(author.ma)"
                                             type="button"
                                             class="btn btn-warning btn-sm float-left mx-2 btn-circle text-white"
                                             data-toggle="tooltip"
                                             title="Sửa"
                                             data-placement="bottom"
-                                            @click="showEditAuthors(author)"
                                         >
                                             <i class="fas fa-edit"></i>
-                                        </button>
+                                        </b-button>
                                         <button
                                             type="button"
                                             class="btn btn-danger btn-sm btn-circle btnDelete"
@@ -133,149 +191,156 @@
                 </div>
             </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" id="EditAuthor" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editLabel">Sửa tác giả</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeEditAuthors()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="card-body">
-                            <form
-                                class="needs-validation"
-                                @submit.prevent="editAuthors"
-                                novalidate
-                            >
-                                <div class="form-group mb-4">
-                                    <label for="makh" class="col-form-label"
-                                        >Mã tác giả:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="ma"
-                                        name="ma"
-                                        v-model="ma"
-                                        placeholder="Mã tác giả"
-                                        value=""
-                                        pattern="[N][V][0-9]{3}"
-                                        readonly
-                                    />
-                                    <div class="invalid-feedback">
-                                        Đang trống hoặc mã không đúng (ví dụ:
-                                        NV001)
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Họ tác giả:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="firstname"
-                                        name="firstname"
-                                        v-model="firstname"
-                                        placeholder="Họ tác giả"
-                                        value=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Tên tác giả:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="lastname"
-                                        name="lastname"
-                                        v-model="lastname"
-                                        placeholder="Tên tác giả"
-                                        value=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Mô tả:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="biography"
-                                        name="biography"
-                                        v-model="biography"
-                                        placeholder="Mô tả"
-                                        
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeEditAuthors()">Close</button>
-                        <button type="button" class="btn btn-primary" @click="editAuthors()">Apply changes</button>
-                    </div>
-                </div>
+        <div class="row mt-4">
+            <div class="col-sm-6 offset-5">
+                <pagination
+                    :data="authors"
+                    @pagination-change-page="loadAuthors"
+                ></pagination>
             </div>
+        </div>
+        <!-- Modal -->
+        <div>
+
+            
+
+            <b-modal
+                id="modal-prevent-closing"
+                ref="modal"
+                title="Chỉnh sửa tác giả"
+                @show="resetModal"
+                @hidden="resetModal"
+                @ok="handleOk"
+            >
+                <form ref="form" @submit.stop.prevent="handleSubmit">
+                    <b-form-group
+                        label="Mã"
+                        label-for="code-input"
+                        invalid-feedback="Code is required"
+                        :state="nameState"
+                    >
+                        <b-form-input
+                            id="code-input"
+                            v-model="ma"
+                            :state="nameState"
+                            readonly
+                        ></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                        label="Firstname"
+                        label-for="firstname-input"
+                        invalid-feedback="Firstname is required"
+                        :state="nameState"
+                    >
+                        <b-form-input
+                            id="firstname-input"
+                            v-model="firstname"
+                            :state="nameState"
+                            required
+                        ></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                        label="Lastname"
+                        label-for="lastname-input"
+                        invalid-feedback="Lastname is required"
+                        :state="nameState"
+                    >
+                        <b-form-input
+                            id="lastname-input"
+                            v-model="lastname"
+                            :state="nameState"
+                            required
+                        ></b-form-input>
+                    </b-form-group>
+                    <b-form-group
+                        label="Mô tả"
+                        label-for="biography-input"
+                        invalid-feedback="Biography is required"
+                        :state="nameState"
+                    >
+                        <b-form-input
+                            id="biography-input"
+                            v-model="biography"
+                            :state="nameState"
+                            required
+                        ></b-form-input>
+                    </b-form-group>
+                </form>
+            </b-modal>
         </div>
     </div>
 </template>
 <script>
+import "bootstrap";
 import "datatables.net-dt/js/dataTables.dataTables";
 import "datatables.net-dt/css/jquery.dataTables.min.css";
 import axios from "axios";
 import swal from "sweetalert";
+import $ from "jquery";
 export default {
     data: function () {
         return {
-            authors: [],
-            message:[]
+            laravelData: {},
+            author: [],
+            authors: {},
+            message: [],
+            paginate: 10,
+            ma: "",
+            nameState: null,
+            submittedNames: [],
+            code: "",
+            firstname: "",
+            lastname: "",
+            biography: "",
         };
+    },
+    watch: {
+        paginate: function (value) {
+            this.loadAuthors();
+        },
+        search: function (value) {
+            this.loadAuthors();
+        },
+        selectPage: function (value) {
+            this.checked = [];
+            if (value) {
+                this.students.data.forEach((student) => {
+                    this.checked.push(student.id);
+                });
+            } else {
+                this.checked = [];
+                this.selectAll = false;
+            }
+        },
+        checked: function (value) {
+            this.url = "/api/students/export/" + this.checked;
+        },
     },
     mounted() {
         this.loadAuthors();
     },
     methods: {
-        loadAuthors: function () {
+        loadAuthors: function (page = 1) {
             axios
-                .get('/api/author')
+                .get("/api/author?page=" + page + "&paginate=" + this.paginate)
                 .then((response) => {
-                    this.authors = response.data.data;
+                    // this.laravelData = response.data;
+                    this.authors = response.data;
+                    // $("#datatable").DataTable();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
         showEditAuthors: function (author) {
-            this.modal = 'edit';
-            this.authorEdit = author;
-            document.getElementById("ma").value = author.ma;
-            document.getElementById("lastname").value = author.lastname;
-            document.getElementById("firstname").value = author.firstname;
-            document.getElementById("biography").value = author.biography;
-            $("#EditAuthor").modal("show");
+            // $("#modal-prevent-closing").modal("show");ư
+            this.ma = author;
+            this.$refs['modal'].show();
         },
         closeEditAuthors: function () {
-            $("#EditAuthor").modal("hide");
+            this.modal = "edit";
+            this.product = product;
+            $("#product").modal("show");
         },
         editAuthors: function () {
             swal({
@@ -287,22 +352,30 @@ export default {
             }).then((willDelete) => {
                 if (willDelete) {
                     axios
-                .post('api/editauthor/' + document.getElementById('ma').value, {
-                    ma: document.getElementById('ma').value, 
-                    firstname: document.getElementById('firstname').value, 
-                    lastname: document.getElementById('lastname').value, 
-                    biography: document.getElementById('biography').value})
-                .then( (response)  => {
-                    this.message = response.data;
-                    swal("Thành công! tác giả đã được sửa", {
+                        .post(
+                            "api/editauthor/" +
+                                this.ma,
+                            {
+                                ma: this.ma,
+                                firstname:
+                                    this.firstname,
+                                lastname:
+                                    this.lastname,
+                                biography:
+                                    this.biography,
+                            }
+                        )
+                        .then((response) => {
+                            this.message = response.data;
+                            swal("Thành công! tác giả đã được sửa", {
                                 icon: "success",
                             });
-                    this.$router.go();
-                    // alert(this.message);
-                })
-                .catch(function (error) {
-                    onsole.log(error);
-                });
+                            this.$router.go();
+                            // alert(this.message);
+                        })
+                        .catch(function (error) {
+                            onsole.log(error);
+                        });
                 } else {
                     swal("Đã hủy!");
                 }
@@ -327,6 +400,7 @@ export default {
                             swal("Thành công! tác giả này đã được xóa!", {
                                 icon: "success",
                             });
+                            this.$router.go();
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -334,6 +408,36 @@ export default {
                 } else {
                     swal("Đã hủy!");
                 }
+            });
+        },
+        checkFormValidity() {
+            const valid = this.$refs.form.checkValidity();
+            this.nameState = valid;
+            return valid;
+        },
+        resetModal() {
+            this.ma = "";
+            this.firstname = "",
+            this.lastname = "",
+            this.biography = "",
+            this.nameState = null;
+        },
+        handleOk(bvModalEvent) {
+            // Prevent modal from closing
+            bvModalEvent.preventDefault();
+            // Trigger submit handler
+            this.handleSubmit();
+        },
+        handleSubmit() {
+            if (!this.checkFormValidity()) {
+                return;
+            }
+            // Push the name to submitted names
+            // this.submittedNames.push(this.name);
+            // Hide the modal manually
+            this.$nextTick(() => {
+                this.editAuthors();
+                this.$bvModal.hide("modal-prevent-closing");
             });
         },
     },
