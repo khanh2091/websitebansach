@@ -23,7 +23,12 @@ class AuthorController extends Controller
     {
         //
         $Paginate = request('paginate',10);
-        $author = Author::orderBy('ma')->paginate($Paginate);
+        $Search_term = request('q', '');
+        $author = Author::orderBy('ma')->where('ma', 'like' , $Search_term)
+        ->orWhere('firstname', 'like', $Search_term)
+        ->orWhere('lastname', 'like', $Search_term)
+        ->orWhere('biography', 'like', $Search_term)
+        ->paginate($Paginate);
         // if (isset($paginate)) {
         //     $author = Author::orderBy('ma')->paginate(3);
         // } else {
@@ -88,7 +93,7 @@ class AuthorController extends Controller
     {
         // $author = Author::where('ma', $ma)->get();
 
-        $post = DB::table('authors')->where('ma', $ma)->delete();
+        $post = DB::table('publishers')->where('ma', $ma)->delete();
         return response()->json('The post successfully deleted');
         // return $ma;
     }

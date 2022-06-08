@@ -274,7 +274,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                   <router-link class="nav-link" :class="[{active: $route.name === 'publisher'}]" :to="{name: 'publisher'}">
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +292,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Nhà xuất bản</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <hr class="sidebar-divider" />

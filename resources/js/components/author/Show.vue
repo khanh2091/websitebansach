@@ -120,7 +120,7 @@
                 </div>
                 <div class="col-md-4" style="padding: 20px">
                     <input
-                        v-model.lazy="search"
+                        v-model="search"
                         type="search"
                         class="form-control"
                         placeholder="Tìm kiếm..."
@@ -292,6 +292,7 @@ export default {
             firstname: "",
             lastname: "",
             biography: "",
+            search: "",
         };
     },
     watch: {
@@ -322,7 +323,9 @@ export default {
     methods: {
         loadAuthors: function (page = 1) {
             axios
-                .get("/api/author?page=" + page + "&paginate=" + this.paginate)
+                .get("/api/author?page=" + page 
+                + "&paginate=" + this.paginate
+                + "&q=" + "%" + this.search + "%")
                 .then((response) => {
                     // this.laravelData = response.data;
                     this.authors = response.data;
@@ -335,6 +338,9 @@ export default {
         showEditAuthors: function (author) {
             // $("#modal-prevent-closing").modal("show");ư
             this.ma = author;
+            this.firstname = "";
+            this.lastname = "";
+            this.biography = "";
             this.$refs['modal'].show();
         },
         closeEditAuthors: function () {
@@ -416,10 +422,7 @@ export default {
             return valid;
         },
         resetModal() {
-            this.ma = "";
-            this.firstname = "",
-            this.lastname = "",
-            this.biography = "",
+
             this.nameState = null;
         },
         handleOk(bvModalEvent) {

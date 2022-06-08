@@ -26,4 +26,14 @@ class Author extends Model
     {
         return "{$this['lastname']} {$this['firstname']}";
     }
+    public function scopeSreach($query, $term){
+        $term = "%$term%";
+
+        $query->where(function ($query) use ($term) {
+            $query->where('ma', 'like', $term)
+                ->orWhere('firstname', 'like', $term)
+                ->orWhere('lastname', 'like', $term)
+                ->orWhere('biography', 'like', $term);
+        });
+    }
 }
