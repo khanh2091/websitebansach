@@ -340,7 +340,7 @@ export default {
             this.ma = author;
             this.firstname = "";
             this.lastname = "";
-            this.biography = "";
+            this.biography = ""
             this.$refs['modal'].show();
         },
         closeEditAuthors: function () {
@@ -397,12 +397,8 @@ export default {
             }).then((willDelete) => {
                 if (willDelete) {
                     axios
-                        .delete("api/author/" + ma)
+                        .delete("/api/admin/deleteauthor/" + ma)
                         .then((response) => {
-                            let i = this.authors
-                                .map((item) => item.ma)
-                                .indexOf(ma); // find index of your object
-                            this.authors.splice(i, 1);
                             swal("Thành công! tác giả này đã được xóa!", {
                                 icon: "success",
                             });

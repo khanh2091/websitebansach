@@ -21,7 +21,7 @@
                             class="nav-link"
                             :class="[{ active: $route.name === 'publisher' }]"
                             :to="{ name: 'publisher' }"
-                            >Danh sách tác giả</router-link
+                            >Danh sách nhà xuất bản</router-link
                         >
                     </li>
                     <li class="breadcrumb-item">
@@ -29,7 +29,7 @@
                             class="nav-link"
                             :class="[{ active: $route.name === 'addPublisher' }]"
                             :to="{ name: 'addPublisher' }"
-                            >Thêm tác giả</router-link
+                            >Thêm nhà xuất bản</router-link
                         >
                     </li>
                 </ol>

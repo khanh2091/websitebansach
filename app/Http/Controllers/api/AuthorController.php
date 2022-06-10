@@ -93,7 +93,7 @@ class AuthorController extends Controller
     {
         // $author = Author::where('ma', $ma)->get();
 
-        $post = DB::table('publishers')->where('ma', $ma)->delete();
+        $post = DB::table('authors')->where('ma', $ma)->delete();
         return response()->json('The post successfully deleted');
         // return $ma;
     }

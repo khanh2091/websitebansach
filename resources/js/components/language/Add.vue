@@ -19,25 +19,25 @@
                     <li class="breadcrumb-item">
                         <router-link
                             class="nav-link"
-                            :class="[{ active: $route.name === 'publisher' }]"
-                            :to="{ name: 'publisher' }"
-                            >Danh sách tác giả</router-link
+                            :class="[{ active: $route.name === 'language' }]"
+                            :to="{ name: 'language' }"
+                            >Danh sách ngôn ngữ</router-link
                         >
                     </li>
                     <li class="breadcrumb-item">
                         <router-link
                             class="nav-link"
-                            :class="[{ active: $route.name === 'addPublisher' }]"
-                            :to="{ name: 'addPublisher' }"
-                            >Thêm tác giả</router-link
+                            :class="[{ active: $route.name === 'addLanguage' }]"
+                            :to="{ name: 'addLanguage' }"
+                            >Thêm ngôn ngữ</router-link
                         >
                     </li>
                 </ol>
             </nav>
             <div class="dropdown">
                 <router-link
-                    :class="[{ active: $route.name === 'addPublisher' }]"
-                    :to="{ name: 'addPublisher' }"
+                    :class="[{ active: $route.name === 'addLanguage' }]"
+                    :to="{ name: 'addLanguage' }"
                     class="btn btn-gray-800 d-inline-flex align-items-center me-2"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -56,7 +56,7 @@
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                         ></path>
                     </svg>
-                    Thêm nhà xuất bản
+                    Thêm ngôn ngữ
                 </router-link>
             </div>
         </div>
@@ -79,7 +79,7 @@
                             >
                                 <div class="form-group mb-4">
                                     <label for="makh" class="col-form-label"
-                                        >Mã nxb:
+                                        >Mã ngôn ngữ:
                                     </label>
                                     <input
                                         class="form-control"
@@ -87,7 +87,7 @@
                                         id="ma"
                                         name="ma"
                                         v-model="ma"
-                                        placeholder="Mã nhà xuất bản"
+                                        placeholder="Mã nngôn ngữ"
                                         value=""
                                         pattern="[N][V][0-9]{3}"
                                         required
@@ -101,7 +101,7 @@
                                     <label
                                         for="validationKhachHangNam"
                                         class="col-form-label"
-                                        >Tên nxb:
+                                        >Tên ngôn ngữ:
                                     </label>
                                     <input
                                         class="form-control"
@@ -109,27 +109,7 @@
                                         id="name"
                                         name="name"
                                         v-model="name"
-                                        placeholder="Tên nhà xuất bản"
-                                        value=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Mô tả:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="description"
-                                        name="description"
-                                        v-model="description"
-                                        placeholder="Mô tả"
+                                        placeholder="Tên ngôn ngữ"
                                         value=""
                                         required
                                     />
@@ -142,7 +122,7 @@
                                         class="btn btn-success text-white"
                                         type="submit"
                                     >
-                                        Thêm nxb
+                                        Thêm ngôn ngữ
                                     </button>
                                     <button
                                         type="reset"
@@ -167,17 +147,15 @@ export default {
         return {
             ma: '',
             name: '',
-            description: '',
         };
     },
     methods: {
         formSubmit() {
 
             axios
-                .post(`/api/admin/addpublisher`, {
+                .post(`/api/admin/addlanguage`, {
                     ma: this.ma, 
-                    name: this.name, 
-                    description: this.description})
+                    name: this.name})
                 .then( (response)  => {
                     swal("Thêm thành công!", "", "success");
 

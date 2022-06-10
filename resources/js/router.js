@@ -7,6 +7,8 @@ import Tacgia from './components/author/Show.vue'
 import addAuthor from './components/author/Add.vue'
 import publisher from './components/publisher/Show.vue'
 import addPublisher from './components/publisher/Add.vue'
+import language from './components/language/Show.vue'
+import addLanguage from './components/language/Add.vue'
 const routes = [{
         path: '/admin',
         component: home,
@@ -32,6 +34,16 @@ const routes = [{
         path: '/admin/publisher/addPublisher',
         component: addPublisher,
         name: 'addPublisher'
+    },
+    {
+        path: '/admin/language',
+        component: language,
+        name: 'language'
+    },
+    {
+        path: '/admin/language/addLanguage',
+        component: addLanguage,
+        name: 'addLanguage'
     },
 
 ]

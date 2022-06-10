@@ -252,7 +252,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <router-link class="nav-link" :class="[{active: $route.name === 'language'}]" :to="{name: 'language'}">
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -270,7 +270,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Ngôn ngữ</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="nav-item">

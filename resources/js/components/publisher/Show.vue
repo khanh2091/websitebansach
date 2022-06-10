@@ -380,7 +380,7 @@ export default {
             }).then((willDelete) => {
                 if (willDelete) {
                     axios
-                        .delete("/api/admin/author/" + ma)
+                        .delete("/api/admin/deletepublisher/" + ma)
                         .then((response) => {
                             swal("Thành công! tác giả này đã được xóa!", {
                                 icon: "success",

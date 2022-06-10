@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LanguageResource;
+use App\Models\Language;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LanguagesController extends Controller
 {
@@ -15,6 +18,18 @@ class LanguagesController extends Controller
     public function index()
     {
         //
+        $Paginate = request('paginate',10);
+        $Search_term = request('q','');
+        $language = Language::orderBy('ma')->where('ma', 'like' , $Search_term)
+        ->orWhere('name', 'like', $Search_term)
+        ->paginate($Paginate);
+        // if (isset($paginate)) {
+        //     $author = Author::orderBy('ma')->paginate(3);
+        // } else {
+        //     $author = Author::orderBy('ma')->get();
+        // }
+        return LanguageResource::collection($language);
+        // return $publisher;
     }
 
     /**
@@ -26,6 +41,9 @@ class LanguagesController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->all();
+        $status = Language::create($data);
+        return $status;
     }
 
     /**
@@ -46,9 +64,17 @@ class LanguagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $ma)
     {
         //
+        $publisher = Language::where('ma', $ma)->get();
+        if($publisher=='[]'){
+            return 'Ngôn ngữ không tồn tại';
+        }else{
+            $data = $request->all();
+            $publisher = Language::where('ma', $ma)->update($data);
+            return 'Thành công';
+        }
     }
 
     /**
@@ -57,8 +83,10 @@ class LanguagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($ma)
     {
         //
+        $post = DB::table('languages')->where('ma', $ma)->delete();
+        return response()->json('The post successfully deleted');
     }
 }

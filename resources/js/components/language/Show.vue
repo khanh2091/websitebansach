@@ -19,17 +19,17 @@
                     <li class="breadcrumb-item">
                         <router-link
                             class="nav-link"
-                            :class="[{ active: $route.name === 'publisher' }]"
-                            :to="{ name: 'publisher' }"
-                            >Danh sách nhà xuất bản</router-link
+                            :class="[{ active: $route.name === 'language' }]"
+                            :to="{ name: 'language' }"
+                            >Danh sách ngôn ngữ</router-link
                         >
                     </li>
                 </ol>
             </nav>
             <div class="dropdown">
                 <router-link
-                    :class="[{ active: $route.name === 'addPublisher' }]"
-                    :to="{ name: 'addPublisher' }"
+                    :class="[{ active: $route.name === 'addLanguage' }]"
+                    :to="{ name: 'addLanguage' }"
                     class="btn btn-gray-800 d-inline-flex align-items-center me-2"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -48,14 +48,14 @@
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                         ></path>
                     </svg>
-                    Thêm nhà xuát bản
+                    Thêm ngôn ngữ
                 </router-link>
             </div>
         </div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="mt-2 font-weight-bold text-primary float-left">
-                    Danh sách nhà xuất bản
+                    Danh sách ngôn ngữ
                 </h6>
             </div>
             <div
@@ -139,7 +139,6 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Tên nhà xuất bản</th>
-                                <th>Mô tả</th>
                                 <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
                                 <th>Chức năng</th>
@@ -147,24 +146,23 @@
                         </thead>
                         <tbody>
                             <tr
-                                v-for="publisher in publishers.data"
-                                v-blind:key="publisher.ma"
-                                :key="publisher.ma"
+                                v-for="language in languages.data"
+                                v-blind:key="language.ma"
+                                :key="language.ma"
                             >
-                                <td>{{ publisher.ma }}</td>
+                                <td>{{ language.ma }}</td>
 
                                 <td>
-                                    {{ publisher.name }}
+                                    {{ language.name }}
                                 </td>
-                                <td>{{ publisher.description }}</td>
-                                <td>{{ publisher.created_at }}</td>
-                                <td>{{ publisher.updated_at }}</td>
+                                <td>{{ language.created_at }}</td>
+                                <td>{{ language.updated_at }}</td>
                                 <td class="col-sm-1">
                                     <div
                                         class="d-flex justify-content-center align-items-center"
                                     >
                                         
-                                        <b-button @click="showEditPublishers(publisher.ma)"
+                                        <b-button @click="showEditLanguages(language.ma)"
                                             type="button"
                                             class="btn btn-warning btn-sm float-left mx-2 btn-circle text-white"
                                             data-toggle="tooltip"
@@ -179,7 +177,7 @@
                                             data-toggle="tooltip"
                                             title="Xóa"
                                             data-placement="bottom"
-                                            @click="deletePublishers(publisher.ma)"
+                                            @click="deleteLanguages(language.ma)"
                                         >
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -194,8 +192,8 @@
         <div class="row mt-4">
             <div class="col-sm-6 offset-5">
                 <pagination
-                    :data="publishers"
-                    @pagination-change-page="loadPublishers"
+                    :data="languages"
+                    @pagination-change-page="loadLanguages"
                 ></pagination>
             </div>
         </div>
@@ -239,19 +237,6 @@
                             required
                         ></b-form-input>
                     </b-form-group>
-                    <b-form-group
-                        label="Mô tả"
-                        label-for="description-input"
-                        invalid-feedback="Biography is required"
-                        :state="nameState"
-                    >
-                        <b-form-input
-                            id="description-input"
-                            v-model="description"
-                            :state="nameState"
-                            required
-                        ></b-form-input>
-                    </b-form-group>
                 </form>
             </b-modal>
         </div>
@@ -268,8 +253,8 @@ export default {
     data: function () {
         return {
             laravelData: {},
-            publisher: [],
-            publishers: {},
+            language: [],
+            languages: {},
             message: [],
             paginate: 10,
             ma: "",
@@ -277,16 +262,15 @@ export default {
             submittedNames: [],
             code: "",
             name: "",
-            description: "",
             search: "",
         };
     },
     watch: {
         paginate: function (value) {
-            this.loadPublishers();
+            this.loadLanguages();
         },
         search: function (value) {
-            this.loadPublishers();
+            this.loadLanguages();
         },
         selectPage: function (value) {
             this.checked = [];
@@ -304,28 +288,27 @@ export default {
         },
     },
     mounted() {
-        this.loadPublishers();
+        this.loadLanguages();
     },
     methods: {
-        loadPublishers: function (page = 1) {
+        loadLanguages: function (page = 1) {
             axios
-                .get("/api/admin/publisher?page=" + page 
+                .get("/api/admin/language?page=" + page 
                 + "&paginate=" + this.paginate
                 + "&q=" + "%" + this.search + "%")
                 .then((response) => {
                     // this.laravelData = response.data;
-                    this.publishers = response.data;
+                    this.languages = response.data;
                     // $("#datatable").DataTable();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        showEditPublishers: function (publisher) {
+        showEditLanguages: function (language) {
             // $("#modal-prevent-closing").modal("show");ư
-            this.ma = publisher;
+            this.ma = language;
             this.name = "";
-            this.description = "";
             this.$refs['modal'].show();
         },
         closeEditPublishers: function () {
@@ -333,7 +316,7 @@ export default {
             this.product = product;
             $("#product").modal("show");
         },
-        editPublishers: function () {
+        editLanguages: function () {
             swal({
                 title: "Có chắc không?",
                 text: "Sau khi thay đổi, bạn sẽ không thể khôi phục dữ liệu này!!",
@@ -344,14 +327,12 @@ export default {
                 if (willDelete) {
                     axios
                         .post(
-                            "/api/admin/editpublisher/" +
+                            "/api/admin/editlanguage/" +
                                 this.ma,
                             {
                                 ma: this.ma,
                                 name:
                                     this.name,
-                                description:
-                                    this.description,
                             }
                         )
                         .then((response) => {
@@ -370,7 +351,7 @@ export default {
                 }
             });
         },
-        deletePublishers: function (ma) {
+        deleteLanguages: function (ma) {
             swal({
                 title: "Có chắc không?",
                 text: "Sau khi xóa, bạn sẽ không thể khôi phục dữ liệu này!!",
@@ -380,7 +361,7 @@ export default {
             }).then((willDelete) => {
                 if (willDelete) {
                     axios
-                        .delete("/api/admin/author/" + ma)
+                        .delete("/api/admin/deletelanguage/" + ma)
                         .then((response) => {
                             swal("Thành công! tác giả này đã được xóa!", {
                                 icon: "success",
@@ -418,7 +399,7 @@ export default {
             // this.submittedNames.push(this.name);
             // Hide the modal manually
             this.$nextTick(() => {
-                this.editPublishers();
+                this.editLanguages();
                 this.$bvModal.hide("modal-prevent-closing");
             });
         },
