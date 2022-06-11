@@ -9,6 +9,10 @@ import publisher from './components/publisher/Show.vue'
 import addPublisher from './components/publisher/Add.vue'
 import language from './components/language/Show.vue'
 import addLanguage from './components/language/Add.vue'
+import categories from './components/categorie/Show.vue'
+import addCategories from './components/categorie/Add.vue'
+// import book from './components/book/Show.vue'
+// import addBook from './components/book/Add.vue'
 const routes = [{
         path: '/admin',
         component: home,
@@ -45,7 +49,16 @@ const routes = [{
         component: addLanguage,
         name: 'addLanguage'
     },
-
+    {
+        path: '/admin/categories',
+        component: categories,
+        name: 'categories'
+    },
+    {
+        path: '/admin/categories/addCategories',
+        component: addCategories,
+        name: 'addCategories'
+    },
 ]
 export const router = new Router({
     // base: 'admin',

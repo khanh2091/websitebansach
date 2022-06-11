@@ -30,3 +30,10 @@ Route::delete('admin/deletepublisher/{ma}', [App\Http\Controllers\api\Publishers
  Route::post('admin/addlanguage', [App\Http\Controllers\api\LanguagesController::class, 'store'])->name('add-language');
  Route::post('admin/editlanguage/{ma}', [App\Http\Controllers\api\LanguagesController::class, 'update'])->name('update-language');
  Route::delete('admin/deletelanguage/{ma}', [App\Http\Controllers\api\LanguagesController::class, 'destroy'])->name('delete-language');
+  //Ngôn ngữ
+  Route::get('admin/category', [App\Http\Controllers\api\CategoriesController::class, 'index'])->name('get-list-category');
+  Route::get('admin/parent_category', [App\Http\Controllers\api\CategoriesController::class, 'getListByParent'])->name('get-list-parent-category');
+  Route::get('admin/all_category', [App\Http\Controllers\api\CategoriesController::class, 'getAll'])->name('get-all-category');
+  Route::post('admin/addcategory', [App\Http\Controllers\api\CategoriesController::class, 'store'])->name('add-category');
+  Route::post('admin/editcategory/{ma}', [App\Http\Controllers\api\CategoriesController::class, 'update'])->name('update-category');
+  Route::delete('admin/deletecategory/{ma}', [App\Http\Controllers\api\CategoriesController::class, 'destroy'])->name('delete-category');

@@ -64,7 +64,7 @@
             <div>
                 <div class="card-header py-3">
                     <h6 class="mt-2 font-weight-bold text-primary float-left">
-                        Thêm nhân viên
+                        Thêm nhà xuất bản
                     </h6>
                 </div>
             </div>

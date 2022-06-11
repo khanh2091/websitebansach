@@ -207,7 +207,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <router-link class="nav-link" :class="[{active: $route.name === 'categories'}]" :to="{name: 'categories'}">
                         <span class="sidebar-icon">
                             <svg
                                 class="icon icon-xs me-2"
@@ -226,7 +226,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Danh mục</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="nav-item">
