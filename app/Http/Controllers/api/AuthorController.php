@@ -97,4 +97,10 @@ class AuthorController extends Controller
         return response()->json('The post successfully deleted');
         // return $ma;
     }
+    public function getAll()
+    {
+        # code...
+        // return CategoriesResource::collection(Catagories::select('ma','title')->get());
+        return Author::select('ma','firstname', 'lastname')->get();
+    }
 }

@@ -89,4 +89,10 @@ class LanguagesController extends Controller
         $post = DB::table('languages')->where('ma', $ma)->delete();
         return response()->json('The post successfully deleted');
     }
+    public function getAll()
+    {
+        # code...
+        // return CategoriesResource::collection(Catagories::select('ma','title')->get());
+        return Language::select('ma','name')->get();
+    }
 }

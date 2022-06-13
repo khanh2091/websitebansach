@@ -185,7 +185,7 @@
                 <div class="sidebar-heading">THÔNG TIN</div>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <router-link class="nav-link" :class="[{active: $route.name === 'book'}]" :to="{name: 'book'}">
                         <span class="sidebar-icon">
                             <svg
                                 class="icon icon-xs me-2"
@@ -203,7 +203,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Sách</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="nav-item">

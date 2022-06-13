@@ -90,4 +90,10 @@ class PublishersController extends Controller
         $post = DB::table('publishers')->where('ma', $ma)->delete();
         return response()->json('The post successfully deleted');
     }
+    public function getAll()
+    {
+        # code...
+        // return CategoriesResource::collection(Catagories::select('ma','title')->get());
+        return Publisher::select('ma','name')->get();
+    }
 }

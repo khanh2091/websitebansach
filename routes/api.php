@@ -33,7 +33,20 @@ Route::delete('admin/deletepublisher/{ma}', [App\Http\Controllers\api\Publishers
   //Ngôn ngữ
   Route::get('admin/category', [App\Http\Controllers\api\CategoriesController::class, 'index'])->name('get-list-category');
   Route::get('admin/parent_category', [App\Http\Controllers\api\CategoriesController::class, 'getListByParent'])->name('get-list-parent-category');
-  Route::get('admin/all_category', [App\Http\Controllers\api\CategoriesController::class, 'getAll'])->name('get-all-category');
   Route::post('admin/addcategory', [App\Http\Controllers\api\CategoriesController::class, 'store'])->name('add-category');
   Route::post('admin/editcategory/{ma}', [App\Http\Controllers\api\CategoriesController::class, 'update'])->name('update-category');
   Route::delete('admin/deletecategory/{ma}', [App\Http\Controllers\api\CategoriesController::class, 'destroy'])->name('delete-category');
+
+  //Sách
+  Route::get('admin/all_category', [App\Http\Controllers\api\CategoriesController::class, 'getAll'])->name('get-all-category');
+  Route::get('admin/all_language', [App\Http\Controllers\api\LanguagesController::class, 'getAll'])->name('get-all-category');
+  Route::get('admin/all_publisher', [App\Http\Controllers\api\PublishersController::class, 'getAll'])->name('get-all-category');
+  Route::get('admin/all_author', [App\Http\Controllers\api\AuthorController::class, 'getAll'])->name('get-all-category');
+
+
+  Route::get('admin/book', [App\Http\Controllers\api\BooksController::class, 'index'])->name('get-list-book');
+  Route::get('admin/findbook/{ma}', [App\Http\Controllers\api\BooksController::class, 'find'])->name('find-book');
+  Route::post('admin/addbook', [App\Http\Controllers\api\BooksController::class, 'store'])->name('add-book');
+  Route::post('admin/editbook/{ma}', [App\Http\Controllers\api\BooksController::class, 'update'])->name('update-book');
+  Route::delete('admin/deletebook/{ma}', [App\Http\Controllers\api\BooksController::class, 'destroy'])->name('delete-book');
+

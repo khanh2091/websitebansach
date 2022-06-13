@@ -19,17 +19,17 @@
                     <li class="breadcrumb-item">
                         <router-link
                             class="nav-link"
-                            :class="[{ active: $route.name === 'author' }]"
-                            :to="{ name: 'author' }"
-                            >Danh sách tác giả</router-link
+                            :class="[{ active: $route.name === 'book' }]"
+                            :to="{ name: 'book' }"
+                            >Danh sách sách</router-link
                         >
                     </li>
                 </ol>
             </nav>
             <div class="dropdown">
                 <router-link
-                    :class="[{ active: $route.name === 'addAuthor' }]"
-                    :to="{ name: 'addAuthor' }"
+                    :class="[{ active: $route.name === 'addBook' }]"
+                    :to="{ name: 'addBook' }"
                     class="btn btn-gray-800 d-inline-flex align-items-center me-2"
                     aria-haspopup="true"
                     aria-expanded="false"
@@ -48,14 +48,14 @@
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                         ></path>
                     </svg>
-                    Thêm tác giả
+                    Thêm sách
                 </router-link>
             </div>
         </div>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="mt-2 font-weight-bold text-primary float-left">
-                    Danh sách tác giả
+                    Danh sách sách
                 </h6>
             </div>
             <div
@@ -82,7 +82,7 @@
                                 class="text-nowrap mr-2 mb-0"
                                 style="margin-left: 10px"
                             >
-                               tác giả trên trang</label
+                                sách trên trang</label
                             >
                         </div>
                     </div>
@@ -138,33 +138,95 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>Id</th>
-                                <th>Họ tên</th>
+                                <th>Tên sách</th>
+                                <th>Hình</th>
+                                <th>Slug</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Số trang</th>
                                 <th>Mô tả</th>
+                                <th>Ngày xuất bản</th>
+                                <th>Ngày tái bản</th>
+                                <th>Thể loại</th>
+                                <th>Ngôn ngữ</th>
+                                <th>Nhà xuất bản</th>
+                                <th>Tác giả</th>
                                 <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
-                                <th>Chuc nang</th>
+                                <th>Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
-                                v-for="author in authors.data"
-                                v-blind:key="author.ma"
-                                :key="author.ma"
+                                v-for="book in books.data"
+                                v-blind:key="book.ma"
+                                :key="book.ma"
                             >
-                                <td>{{ author.ma }}</td>
-
+                                <td>{{ book.ma }}</td>
+                                <td>{{ book.title }}</td>
                                 <td>
-                                    {{ author.firstname }} {{ author.lastname }}
+                                    {{ showImage(book.images, book.ma) }}
+                                    <span>
+                                        <img :id="book.ma" />
+                                    </span>
                                 </td>
-                                <td>{{ author.biography }}</td>
-                                <td>{{ author.created_at }}</td>
-                                <td>{{ author.updated_at }}</td>
+                                <td>{{ book.slug }}</td>
+                                <td>{{ book.price }}</td>
+                                <td>{{ book.quantity }}</td>
+                                <td>{{ book.page_number }}</td>
+                                <td style="max-width: 400px">
+                                    <textarea
+                                        rows="4"
+                                        cols="40"
+                                        readonly
+                                        style="border: none"
+                                        >{{ book.description }}</textarea
+                                    >
+                                </td>
+                                <td>
+                                    {{ book.publication_date }}
+                                </td>
+                                <td>{{ book.reprint_date }}</td>
+                                <td>
+                                    <span
+                                        v-for="tamp in theloai"
+                                        v-if="tamp.ma == book.category_id"
+                                    >
+                                        {{ tamp.title }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span
+                                        v-for="tamp in ngonngu"
+                                        v-if="tamp.ma == book.language_id"
+                                    >
+                                        {{ tamp.name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span
+                                        v-for="tamp in nhaxuatban"
+                                        v-if="tamp.ma == book.publisher_id"
+                                    >
+                                        {{ tamp.name }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span
+                                        v-for="tamp in tacgia"
+                                        v-if="tamp.ma == book.author_id"
+                                    >
+                                        {{ tamp.firstname }} {{ tamp.lastname }}
+                                    </span>
+                                </td>
+                                <td>{{ format_date(book.created_at) }}</td>
+                                <td>{{ format_date(book.updated_at) }}</td>
                                 <td class="col-sm-1">
                                     <div
                                         class="d-flex justify-content-center align-items-center"
                                     >
-                                        
-                                        <b-button @click="showEditAuthors(author.ma)"
+                                        <b-button
+                                            @click="showEditBook(book.ma)"
                                             type="button"
                                             class="btn btn-warning btn-sm float-left mx-2 btn-circle text-white"
                                             data-toggle="tooltip"
@@ -179,7 +241,9 @@
                                             data-toggle="tooltip"
                                             title="Xóa"
                                             data-placement="bottom"
-                                            @click="deleteAuthor(author.ma)"
+                                            @click="
+                                                deleteBook(book.ma, book.images)
+                                            "
                                         >
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -194,16 +258,13 @@
         <div class="row mt-4">
             <div class="col-sm-6 offset-5">
                 <pagination
-                    :data="authors"
-                    @pagination-change-page="loadAuthors"
+                    :data="books"
+                    @pagination-change-page="loadBooks"
                 ></pagination>
             </div>
         </div>
         <!-- Modal -->
         <div>
-
-            
-
             <b-modal
                 id="modal-prevent-closing"
                 ref="modal"
@@ -212,59 +273,307 @@
                 @hidden="resetModal"
                 @ok="handleOk"
             >
-                <form ref="form" @submit.stop.prevent="handleSubmit">
-                    <b-form-group
-                        label="Mã"
-                        label-for="code-input"
-                        invalid-feedback="Code is required"
-                        :state="nameState"
-                    >
-                        <b-form-input
-                            id="code-input"
+                <form
+                    class="needs-validation"
+                    @submit.prevent="formSubmit"
+                    novalidate
+                    enctype="multipart/form-data"
+                >
+                    <div class="form-group mb-4">
+                        <label for="ma" class="col-form-label">Mã sách: </label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="ma"
+                            name="ma"
                             v-model="ma"
-                            :state="nameState"
+                            placeholder="Mã sách"
+                            value=""
                             readonly
-                        ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                        label="Firstname"
-                        label-for="firstname-input"
-                        invalid-feedback="Firstname is required"
-                        :state="nameState"
-                    >
-                        <b-form-input
-                            id="firstname-input"
-                            v-model="firstname"
-                            :state="nameState"
+                        />
+                        <div class="invalid-feedback">
+                            Không được bỏ trống mã
+                        </div>
+                    </div>
+                    <div class="my-4">
+                        <label for="title" class="col-form-label"
+                            >Tên sách:
+                        </label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="title"
+                            name="title"
+                            v-model="title"
+                            placeholder="Tên sách"
+                            value=""
                             required
-                        ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                        label="Lastname"
-                        label-for="lastname-input"
-                        invalid-feedback="Lastname is required"
-                        :state="nameState"
-                    >
-                        <b-form-input
-                            id="lastname-input"
-                            v-model="lastname"
-                            :state="nameState"
-                            required
-                        ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                        label="Mô tả"
-                        label-for="biography-input"
-                        invalid-feedback="Biography is required"
-                        :state="nameState"
-                    >
-                        <b-form-input
-                            id="biography-input"
-                            v-model="biography"
-                            :state="nameState"
-                            required
-                        ></b-form-input>
-                    </b-form-group>
+                        />
+                        <div class="invalid-feedback">
+                            Không được bỏ trống giá
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="slug" class="col-form-label"
+                                >Slug:
+                            </label>
+                            <input
+                                class="form-control"
+                                type="text"
+                                id="slug"
+                                name="slug"
+                                v-model="slug"
+                                placeholder="Tên sách không không dấu không cách"
+                                value=""
+                                required
+                            />
+                            <div class="invalid-feedback">
+                                Không được bỏ trống đơn vị tính
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="page_number" class="col-form-label"
+                                >Số trang:
+                            </label>
+                            <input
+                                class="form-control"
+                                type="number"
+                                v-model="page_number"
+                                id="page_number"
+                                name="page_number"
+                                placeholder="Số trang sách"
+                                value=""
+                                required
+                            />
+                            <div class="invalid-feedback">
+                                Không được bỏ trống đơn vị tính
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="Gia" class="col-form-label"
+                                >Giá:
+                            </label>
+                            <input
+                                v-model="price"
+                                class="form-control"
+                                type="number"
+                                min="100"
+                                max="1000000"
+                                id="Gia"
+                                name="Gia"
+                                placeholder="Giá"
+                                value=""
+                                required
+                            />
+                            <div class="invalid-feedback">
+                                Không được bỏ trống giá
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="SoLuong" class="col-form-label"
+                                >Số lượng:
+                            </label>
+                            <input
+                                class="form-control"
+                                type="number"
+                                min="0"
+                                max="1000"
+                                id="SoLuong"
+                                name="SoLuong"
+                                v-model="quantity"
+                                placeholder="Số lượng"
+                                value=""
+                                required
+                            />
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label class="my-1 me-2" for="language"
+                                >Ngôn ngữ:
+                            </label>
+                            <select class="form-select" v-model="selectedNN">
+                                <option :value="null">Chọn ngôn ngữ</option>
+                                <option
+                                    v-for="tamp in ngonngu"
+                                    v-bind:value="tamp.ma"
+                                >
+                                    {{ tamp.name }}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label class="my-1 me-2" for="publisher"
+                                >Nhà xuất bản</label
+                            >
+                            <select class="form-select" v-model="selectedNXB">
+                                <option :value="null">Chọn nhà xuất bản</option>
+                                <option
+                                    v-for="tamp in nhaxuatban"
+                                    v-bind:value="tamp.ma"
+                                >
+                                    {{ tamp.name }}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="my-1 me-2" for="language">
+                                Chọn thể loại:
+                            </label>
+                            <select class="form-select" v-model="selectedTL">
+                                <option :value="null">Chọn thể loại:</option>
+                                <option
+                                    v-for="tamp in theloai"
+                                    v-bind:value="tamp.ma"
+                                >
+                                    {{ tamp.title }}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label class="my-1 me-2" for="publisher">
+                                Chọn nhà tác giả</label
+                            >
+                            <select class="form-select" v-model="selectedTG">
+                                <option :value="null">Chọn nhà tác giả:</option>
+                                <option
+                                    v-for="tamp in tacgia"
+                                    v-bind:value="tamp.ma"
+                                >
+                                    {{ tamp.firstname }}
+                                    {{ tamp.lastname }}
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="publication_date">Ngày xuất bản:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><svg
+                                        class="icon icon-xs text-gray-600"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                            clip-rule="evenodd"
+                                        ></path>
+                                    </svg> </span
+                                ><input
+                                    data-datepicker=""
+                                    class="form-control datepicker-input"
+                                    v-model="publication_date"
+                                    id="publication_date"
+                                    type="text"
+                                    placeholder="dd/mm/yyyy"
+                                    required=""
+                                />
+                            </div>
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="reprint_date">Ngày tái bản:</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><svg
+                                        class="icon icon-xs text-gray-600"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                            clip-rule="evenodd"
+                                        ></path>
+                                    </svg> </span
+                                ><input
+                                    data-datepicker=""
+                                    class="form-control datepicker-input"
+                                    v-model="reprint_date"
+                                    id="reprint_date"
+                                    type="text"
+                                    placeholder="dd/mm/yyyy"
+                                    required=""
+                                />
+                            </div>
+                            <div class="invalid-feedback">
+                                Không được bỏ trống số lượng
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="images" class="col-form-label"
+                            >Chọn hình:
+                        </label>
+                        <div class="input-group">
+                            <input
+                                class="form-control"
+                                ref="fileInput"
+                                type="file"
+                                id="formFileLg"
+                                @input="selectImgFile"
+                                required
+                            />
+                            <div class="invalid-feedback">Chưa chọn hình</div>
+                        </div>
+                    </div>
+                    <div>
+                        <img
+                            v-if="filePreview"
+                            @click="chooseFile"
+                            :src="filePreview"
+                            style="max-height: 100px; margin: 20px"
+                        />
+                    </div>
+                    <div class="my-4">
+                        <label for="description">Mô tả: </label>
+                        <textarea
+                            class="form-control"
+                            v-model="description"
+                            placeholder="Điền mô tả..."
+                            id="description"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                    <div class="form-group my-3">
+                        <button
+                            class="btn btn-success text-white"
+                            type="submit"
+                        >
+                            Sửa
+                        </button>
+                        <button type="reset" class="btn btn-warning text-white">
+                            Xoá
+                        </button>
+                    </div>
                 </form>
             </b-modal>
         </div>
@@ -277,30 +586,61 @@ import "datatables.net-dt/css/jquery.dataTables.min.css";
 import axios from "axios";
 import swal from "sweetalert";
 import $ from "jquery";
+import moment from "moment";
+import {
+    getStorage,
+    ref,
+    getDownloadURL,
+    uploadString,
+    deleteObject,
+} from "firebase/storage";
 export default {
     data: function () {
         return {
+            listParent: [],
             laravelData: {},
-            author: [],
-            authors: {},
+            book: [],
+            tacgia: [],
+            theloai: [],
+            ngonngu: [],
+            nhaxuatban: [],
+            books: {},
             message: [],
             paginate: 10,
-            ma: "",
             nameState: null,
             submittedNames: [],
             code: "",
-            firstname: "",
-            lastname: "",
-            biography: "",
+            slug: "",
+            ma: "",
+            title: "",
+            price: "",
+            slug: "",
+            page_number: "",
+            quantity: "",
+            images: "",
+            selectedTG: null,
+            selectedTL: null,
+            selectedNN: null,
+            selectedNXB: null,
+            publication_date: "",
+            reprint_date: "",
+            description: "",
+            image: null,
+            imagepreview: null,
+            filePreview: null,
+            picture: null,
+            imageData: null,
+            uploadValue: 0,
             search: "",
+            selected: null,
         };
     },
     watch: {
         paginate: function (value) {
-            this.loadAuthors();
+            this.loadBooks();
         },
         search: function (value) {
-            this.loadAuthors();
+            this.loadBooks();
         },
         selectPage: function (value) {
             this.checked = [];
@@ -318,37 +658,132 @@ export default {
         },
     },
     mounted() {
-        this.loadAuthors();
+        this.loadBooks();
     },
     methods: {
-        loadAuthors: function (page = 1) {
+        chooseFile() {
+            this.$refs.fileInput.click();
+        },
+        selectImgFile(e) {
+            let fileInput = this.$refs.fileInput;
+            let imgFile = fileInput.files;
+            this.imageData = e.target.files[0];
+            if (imgFile && imgFile[0]) {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.filePreview = e.target.result;
+                };
+                reader.readAsDataURL(imgFile[0]);
+                this.$emit("fileInput", imgFile[0]);
+            }
+        },
+        showImage(fileName, id) {
+            const storage = getStorage();
+            getDownloadURL(ref(storage, fileName))
+                .then((url) => {
+                    // `url` is the download URL for 'images/stars.jpg'
+
+                    // This can be downloaded directly:
+                    const xhr = new XMLHttpRequest();
+                    xhr.responseType = "blob";
+                    xhr.onload = (event) => {
+                        const blob = xhr.response;
+                    };
+                    xhr.open("GET", url);
+                    xhr.send();
+                    // Or inserted into an <img> element
+                    const img = document.getElementById(id);
+                    img.setAttribute("src", url);
+                })
+                .catch((error) => {
+                    // Handle any errors
+                });
+        },
+        format_date(value) {
+            if (value) {
+                return moment(String(value)).format("MMM Do YY");
+            }
+        },
+        loadBooks: function (page = 1) {
             axios
-                .get("/api/author?page=" + page 
-                + "&paginate=" + this.paginate
-                + "&q=" + "%" + this.search + "%")
+                .get("/api/admin/all_category")
                 .then((response) => {
-                    // this.laravelData = response.data;
-                    this.authors = response.data;
-                    // $("#datatable").DataTable();
+                    this.theloai = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/admin/all_language")
+                .then((response) => {
+                    this.ngonngu = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/admin/all_author")
+                .then((response) => {
+                    this.tacgia = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/admin/all_publisher")
+                .then((response) => {
+                    this.nhaxuatban = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get(
+                    "/api/admin/book?page=" +
+                        page +
+                        "&paginate=" +
+                        this.paginate +
+                        "&q=" +
+                        "%" +
+                        this.search +
+                        "%"
+                )
+                .then((response) => {
+                    this.books = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         },
-        showEditAuthors: function (author) {
-            // $("#modal-prevent-closing").modal("show");ư
-            this.ma = author;
-            this.firstname = "";
-            this.lastname = "";
-            this.biography = ""
-            this.$refs['modal'].show();
+        showEditBook: function (category) {
+            this.ma = category;
+            axios
+                .get("/api/admin/findbook/" + this.ma)
+                .then((response) => {
+                    this.listParent = response.data.data;
+                    var parsedobj = JSON.parse(JSON.stringify(this.listParent));
+                    for (let i = 0; i < parsedobj.length; i++) {
+                        this.title = parsedobj[i].title;
+                        this.slug = parsedobj[i].slug;
+                        this.price = parsedobj[i].price;
+                        this.description = parsedobj[i].description;
+                        this.page_number = parsedobj[i].page_number;
+                        this.quantity = parsedobj[i].quantity;
+                        this.publication_date = parsedobj[i].publication_date;
+                        this.reprint_date = parsedobj[i].reprint_date;
+                        this.selectedNN = parsedobj[i].language_id;
+                        this.selectedNXB = parsedobj[i].publisher_id;
+                        this.selectedTL = parsedobj[i].category_id;
+                        this.selectedTG = parsedobj[i].author_id;
+                        this.images = parsedobj[i].images;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            this.$refs["modal"].show();
         },
-        closeEditAuthors: function () {
-            this.modal = "edit";
-            this.product = product;
-            $("#product").modal("show");
-        },
-        editAuthors: function () {
+        formSubmit: function () {
             swal({
                 title: "Có chắc không?",
                 text: "Sau khi thay đổi, bạn sẽ không thể khôi phục dữ liệu này!!",
@@ -357,37 +792,73 @@ export default {
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
+                    if (this.imageData != null) {
+                        const storage = getStorage();
+
+                        // Create a reference to the file to delete
+                        const desertRef = ref(storage, this.images);
+
+                        // Delete the file
+                        deleteObject(desertRef)
+                            .then(() => {
+                                // File deleted successfully
+                            })
+                            .catch((error) => {
+                                // Uh-oh, an error occurred!
+                            });
+                        this.images = this.imageData.name;
+                    }
                     axios
-                        .post(
-                            "api/editauthor/" +
-                                this.ma,
-                            {
-                                ma: this.ma,
-                                firstname:
-                                    this.firstname,
-                                lastname:
-                                    this.lastname,
-                                biography:
-                                    this.biography,
-                            }
-                        )
+                        .post("/api/admin/editbook/" + this.ma, {
+                            ma: this.ma,
+                            title: this.title,
+                            slug: this.slug,
+                            price: this.price,
+                            quantity: this.quantity,
+                            sold: 0,
+                            images: this.images,
+                            page_number: this.page_number,
+                            description: this.description,
+                            publication_date: moment(
+                                this.publication_date
+                            ).format("YYYY-MM-YY"),
+                            reprint_date: moment(this.reprint_date).format(
+                                "YYYY-MM-YY"
+                            ),
+                            category_id: this.selectedTL,
+                            language_id: this.selectedNN,
+                            publisher_id: this.selectedNXB,
+                            author_id: this.selectedTG,
+                            discount: 0,
+                        })
                         .then((response) => {
                             this.message = response.data;
-                            swal("Thành công! tác giả đã được sửa", {
+                            swal(this.message, {
                                 icon: "success",
                             });
                             this.$router.go();
                             // alert(this.message);
                         })
                         .catch(function (error) {
-                            onsole.log(error);
+                            console.log(error);
                         });
+                    const storage = getStorage();
+                    if (this.imageData != null) {
+                        const storageRef = ref(storage, this.imageData.name);
+                        uploadString(
+                            storageRef,
+                            this.filePreview,
+                            "data_url"
+                        ).then((snapshot) => {
+                            console.log(snapshot);
+                        });
+                    }
                 } else {
                     swal("Đã hủy!");
                 }
             });
         },
-        deleteAuthor: function (ma) {
+        deleteBook: function (ma, hinh) {
             swal({
                 title: "Có chắc không?",
                 text: "Sau khi xóa, bạn sẽ không thể khôi phục dữ liệu này!!",
@@ -396,16 +867,31 @@ export default {
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
-                    axios
-                        .delete("/api/admin/deleteauthor/" + ma)
-                        .then((response) => {
-                            swal("Thành công! tác giả này đã được xóa!", {
-                                icon: "success",
-                            });
-                            this.$router.go();
+                    const storage = getStorage();
+
+                    // Create a reference to the file to delete
+                    const desertRef = ref(storage, hinh);
+
+                    // Delete the file
+                    deleteObject(desertRef)
+                        .then(() => {
+                            axios
+                                .delete("/api/admin/deletebook/" + ma)
+                                .then((response) => {
+                                    swal(
+                                        "Thành công! tác giả này đã được xóa!",
+                                        {
+                                            icon: "success",
+                                        }
+                                    );
+                                    this.$router.go();
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
                         })
-                        .catch(function (error) {
-                            console.log(error);
+                        .catch((error) => {
+                            // Uh-oh, an error occurred!
                         });
                 } else {
                     swal("Đã hủy!");
@@ -418,25 +904,18 @@ export default {
             return valid;
         },
         resetModal() {
-
             this.nameState = null;
         },
         handleOk(bvModalEvent) {
-            // Prevent modal from closing
             bvModalEvent.preventDefault();
-            // Trigger submit handler
             this.handleSubmit();
         },
         handleSubmit() {
             if (!this.checkFormValidity()) {
                 return;
             }
-            // Push the name to submitted names
-            // this.submittedNames.push(this.name);
-            // Hide the modal manually
             this.$nextTick(() => {
-                this.editAuthors();
-                this.$bvModal.hide("modal-prevent-closing");
+                this.formSubmit();
             });
         },
     },

@@ -11,8 +11,8 @@ import language from './components/language/Show.vue'
 import addLanguage from './components/language/Add.vue'
 import categories from './components/categorie/Show.vue'
 import addCategories from './components/categorie/Add.vue'
-// import book from './components/book/Show.vue'
-// import addBook from './components/book/Add.vue'
+import book from './components/book/Show.vue'
+import addBook from './components/book/Add.vue'
 const routes = [{
         path: '/admin',
         component: home,
@@ -58,6 +58,16 @@ const routes = [{
         path: '/admin/categories/addCategories',
         component: addCategories,
         name: 'addCategories'
+    },
+    {
+        path: '/admin/books',
+        component: book,
+        name: 'book'
+    },
+    {
+        path: '/admin/categories/addBook',
+        component: addBook,
+        name: 'addBook'
     },
 ]
 export const router = new Router({
