@@ -45,8 +45,23 @@ Route::delete('admin/deletepublisher/{ma}', [App\Http\Controllers\api\Publishers
 
 
   Route::get('admin/book', [App\Http\Controllers\api\BooksController::class, 'index'])->name('get-list-book');
+  Route::get('admin/all_book', [App\Http\Controllers\api\BooksController::class, 'getAll'])->name('get-list-book');
   Route::get('admin/findbook/{ma}', [App\Http\Controllers\api\BooksController::class, 'find'])->name('find-book');
   Route::post('admin/addbook', [App\Http\Controllers\api\BooksController::class, 'store'])->name('add-book');
   Route::post('admin/editbook/{ma}', [App\Http\Controllers\api\BooksController::class, 'update'])->name('update-book');
   Route::delete('admin/deletebook/{ma}', [App\Http\Controllers\api\BooksController::class, 'destroy'])->name('delete-book');
+
+
+  //user
+  Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::post('register', [App\Http\Controllers\UserController::class, 'register']);
+Route::post('login', [App\Http\Controllers\UserController::class, 'login']);
+Route::get('profile','UserController@getAuthenticatedUser');
+
+Route::middleware('auth:api')->get('/user', function(Request $request){
+    return $request->user();
+});
 

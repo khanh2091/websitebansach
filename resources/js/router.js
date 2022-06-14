@@ -13,6 +13,9 @@ import categories from './components/categorie/Show.vue'
 import addCategories from './components/categorie/Add.vue'
 import book from './components/book/Show.vue'
 import addBook from './components/book/Add.vue'
+import trangchu from './components/user/Home.vue'
+import register from './components/user/Register.vue'
+
 const routes = [{
         path: '/admin',
         component: home,
@@ -68,6 +71,16 @@ const routes = [{
         path: '/admin/categories/addBook',
         component: addBook,
         name: 'addBook'
+    },
+    {
+        path: '/',
+        component: trangchu,
+        name: 'trangchu'
+    },
+    {
+        path: '/register',
+        component: register,
+        name: 'register'
     },
 ]
 export const router = new Router({

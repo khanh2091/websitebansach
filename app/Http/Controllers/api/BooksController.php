@@ -137,4 +137,7 @@ class BooksController extends Controller
         return BookResource::collection($post);
         // return "hello";
     }
+    public function getAll(){
+        return Book::get();
+    }
 }
