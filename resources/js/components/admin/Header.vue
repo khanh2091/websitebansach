@@ -1,6 +1,6 @@
 <template>
     <main class="content">
-        <nav
+        <nav v-if="dataUser.user.role == 'employee' || dataUser.user.role=='admin'" 
             class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0"
         >
             <div class="container-fluid px-0">
@@ -12,65 +12,6 @@
 
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item dropdown">
-                            <a
-                                class="nav-link text-dark notification-bell dropdown-toggle"
-                                data-unread-notifications=""
-                                href="javscript:void(0)"
-                                role="button"
-                                data-toggle="dropdown"
-                                data-bs-display="static"
-                                aria-expanded="false"
-                            >
-                                <svg
-                                    class="icon icon-sm text-gray-900"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
-                                    ></path>
-                                </svg>
-                            </a>
-                            <div
-                                class="dropdown-menu dropdown-menu-lg dropdown-menu-center mt-2 py-0"
-                                style="left: 0% !important"
-                            >
-                                <div class="list-group list-group-flush">
-                                    <a
-                                        href="#"
-                                        class="text-center text-primary fw-bold border-bottom border-light py-3"
-                                        >Thông Báo</a
-                                    >
-
-                                    <a
-                                        href=""
-                                        class="dropdown-item text-center fw-bold rounded-bottom py-3"
-                                    >
-                                        <svg
-                                            class="icon icon-xxs text-gray-400 me-1"
-                                            fill="currentColor"
-                                            viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M10 12a2 2 0 100-4 2 2 0 000 4z"
-                                            ></path>
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                                clip-rule="evenodd"
-                                            ></path>
-                                        </svg>
-                                        Xem tất cả
-                                    </a>
-                                    @else
-                                    <p class="text-center text-gray-500 pt-3">
-                                        Không có thông báo
-                                    </p>
-                                    @endif
-                                </div>
-                            </div>
                         </li>
                         <li class="nav-item dropdown ms-lg-3">
                             <a
@@ -91,7 +32,7 @@
                                     >
                                         <span
                                             class="mb-0 font-small fw-bold text-gray-900"
-                                            >Nguyễn Quốc Khánh</span
+                                            >{{ dataUser.user.firstname + " " + dataUser.user.lastname}}</span
                                         >
                                     </div>
                                 </div>
@@ -141,11 +82,12 @@
                                     role="separator"
                                     class="dropdown-divider my-1"
                                 ></div>
-                                <a
+                                <button
                                     class="dropdown-item d-flex align-items-center"
                                     href="javascript:void(0)"
                                     data-toggle="modal"
                                     data-target="#logoutModal"
+                                    @click = "logout"
                                 >
                                     <svg
                                         class="dropdown-icon text-danger me-2"
@@ -162,7 +104,7 @@
                                         ></path>
                                     </svg>
                                     Đăng Xuất
-                                </a>
+                                </button>
                             </div>
                         </li>
                     </ul>
@@ -172,3 +114,67 @@
         <router-view></router-view>
     </main>
 </template>
+<script>
+import $ from "jquery";
+export default {
+    data() {
+        return {
+            dataUser: [],
+            role: "",
+            errorAccunt: null,
+        };
+    },
+    watch: {
+        search(q) {
+            this.searchSubmit(q);
+        },
+    },
+    mounted() {
+        // this.tamp();
+        if (localStorage.usertoken != null) {
+            this.getUser();
+        }
+        if (localStorage.usertoken == null) {
+            this.$router.push({ path: "/login_admin" });
+            this.$router.go();
+        }
+    },
+    methods: {
+        logout: function () {
+            localStorage.removeItem("usertoken");
+            localStorage.removeItem("cart");
+            this.$router.push({ path: "/login_admin" });
+            this.$router.go();
+        },
+        getUser: function () {
+            axios
+                .get("/api/profile", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.usertoken}`,
+                    },
+                })
+                .then((response) => {
+                    this.dataUser = response.data;
+                    console.log(this.dataUser);
+                    if ((this.dataUser == "Đăng nhập quá hạn")) {
+                        this.$router.push({ path: "/login_admin" });
+                        this.$router.go();
+                    }
+                    if (this.dataUser.user.role == "customer") {
+                        alert("Tài khoản của bạn không có quyến truy cập");
+                        this.$router.push({ path: "/login_admin" });
+                        this.$router.go();
+                    }
+                    
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            if (this.errorAccunt != null) {
+                this.$router.push({ path: "/login_admin" });
+                this.$router.go();
+            }
+        },
+    },
+};
+</script>

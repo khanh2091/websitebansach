@@ -11,11 +11,21 @@ import language from './components/language/Show.vue'
 import addLanguage from './components/language/Add.vue'
 import categories from './components/categorie/Show.vue'
 import addCategories from './components/categorie/Add.vue'
+import addAccount from './components/account/Add.vue'
+import account from './components/account/Show.vue'
+import Order from './components/order/Show.vue'
 import book from './components/book/Show.vue'
 import addBook from './components/book/Add.vue'
 import trangchu from './components/user/Home.vue'
 import register from './components/user/Register.vue'
-
+import search from './components/user/Search.vue'
+import allbook from './components/user/Allbook.vue'
+import detailbook from './components/user/Detail.vue'
+import cart from './components/user/Cart.vue'
+import checkout from './components/user/checkout/Checkout.vue'
+import profile from './components/user/profile/Profile.vue'
+import checkOrder from './components/user/profile/CheckOrder.vue'
+import loginadmin from './components/admin/Login.vue'
 const routes = [{
         path: '/admin',
         component: home,
@@ -53,6 +63,11 @@ const routes = [{
         name: 'addLanguage'
     },
     {
+        path: '/admin/order',
+        component: Order,
+        name: 'order'
+    },
+    {
         path: '/admin/categories',
         component: categories,
         name: 'categories'
@@ -73,6 +88,16 @@ const routes = [{
         name: 'addBook'
     },
     {
+        path: '/admin/account',
+        component: account,
+        name: 'account'
+    },
+    {
+        path: '/admin/categories/addAccount',
+        component: addAccount,
+        name: 'addAccount'
+    },
+    {
         path: '/',
         component: trangchu,
         name: 'trangchu'
@@ -81,6 +106,51 @@ const routes = [{
         path: '/register',
         component: register,
         name: 'register'
+    },
+    {
+        path: '/book',
+        component: allbook,
+        name: 'allbook'
+    },
+    {
+        path: '/book/:id',
+        component: allbook,
+        name: 'sortbook'
+    },
+    {
+        path: '/book/chitiet/:id',
+        component: detailbook,
+        name: 'detailbook'
+    },
+    {
+        path: '/sreach/:id',
+        component: search,
+        name: 'search'
+    },
+    {
+        path: '/cart',
+        component: cart,
+        name: 'cart'
+    },
+    {
+        path: '/checkout',
+        component: checkout,
+        name: 'checkout'
+    },
+    {
+        path: '/profile',
+        component: profile,
+        name: 'profile'
+    },
+    {
+        path: '/profile/order',
+        component: checkOrder,
+        name: 'checkorder'
+    },
+    {
+        path: '/login_admin',
+        component: loginadmin,
+        name: 'loginadmin'
     },
 ]
 export const router = new Router({

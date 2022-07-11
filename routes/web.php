@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/login_admin', function() {
+  return view('login');
+})->where('any', '.*');
 Route::get('/admin/{any?}', function() {
   return view('admin.index');
 })->where('any', '.*');

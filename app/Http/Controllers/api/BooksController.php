@@ -26,12 +26,6 @@ class BooksController extends Controller
         ->orWhere('title', 'like', $Search_term)
         ->orWhere('slug', 'like', $Search_term)
         ->orWhere('description', 'like', $Search_term)
-        ->orWhere('quantity', 'like', $Search_term)
-        ->orWhere('price', 'like', $Search_term)
-        ->orWhere('sold', 'like', $Search_term)
-        ->orWhere('page_number', 'like', $Search_term)
-        ->orWhere('publication_date', 'like', $Search_term)
-        ->orWhere('reprint_date', 'like', $Search_term)
         ->paginate($Paginate);
         // if (isset($paginate)) {
         //     $author = Author::orderBy('ma')->paginate(3);
@@ -41,7 +35,45 @@ class BooksController extends Controller
         return BookResource::collection($book);
         // return $publisher;
     }
-
+    public function allbook()
+    {
+        //
+        $Paginate = request('paginate',12);
+        $Search_term = request('q','%%');
+        $orderby = request('order', 'price');
+        $book = Book::orderBy($orderby)->where('ma', 'like' , $Search_term)
+        ->orWhere('title', 'like', $Search_term)
+        ->orWhere('slug', 'like', $Search_term)
+        ->orWhere('description', 'like', $Search_term)
+        ->paginate($Paginate);
+        // if (isset($paginate)) {
+        //     $author = Author::orderBy('ma')->paginate(3);
+        // } else {
+        //     $author = Author::orderBy('ma')->get();
+        // }
+        return BookResource::collection($book);
+        // return $publisher;
+    }
+    public function sortBook()
+    {
+        //
+        $Paginate = request('paginate',12);
+        $Search_term = request('q','%%');
+        $orderby = request('order', 'price');
+        $book = Book::orderBy($orderby)->where('ma', 'like' , $Search_term)
+        ->orWhere('author_id', 'like', $Search_term)
+        ->orWhere('language_id', 'like', $Search_term)
+        ->orWhere('publisher_id', 'like', $Search_term)
+        ->orWhere('category_id', 'like', $Search_term)
+        ->paginate($Paginate);
+        // if (isset($paginate)) {
+        //     $author = Author::orderBy('ma')->paginate(3);
+        // } else {
+        //     $author = Author::orderBy('ma')->get();
+        // }
+        return BookResource::collection($book);
+        // return $publisher;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -53,21 +85,6 @@ class BooksController extends Controller
         
         //
         $data = $request->all();
-        $this->validate($request,[
-            'ma' => 'required|string|max:10',
-            'title'=> 'required|string|max:255',
-            'slug'=> 'required|string|max:255',
-            'price'=> 'required|integer|digits_between:1,1000',
-            'quantity'=> 'required|integer|digits_between:1,1000',
-            'page_number'=> 'required|integer|digits_between:1,10000',
-            'publication_date'=> 'required|',
-            'reprint_date'=> 'required|after:publication_date',
-            'category_id'=> 'required',
-            'language_id'=> 'required',
-            'publisher_id'=> 'required',
-            'author_id'=> 'required',
-            'images'=> 'required',
-        ]);
         $status = Book::create($data);
         return $status;
         // return $data;
@@ -82,6 +99,8 @@ class BooksController extends Controller
     public function show($id)
     {
         //
+        $book = Book::where('ma', $id)->first();
+        return $book;
     }
 
     /**
@@ -95,21 +114,6 @@ class BooksController extends Controller
     {
         //
         // return $request->all();
-        $this->validate($request,[
-            'ma' => 'required|string|max:10',
-            'title'=> 'required|string|max:255',
-            'slug'=> 'required|string|max:255',
-            'price'=> 'required|integer|digits_between:1,1000',
-            'quantity'=> 'required|integer|digits_between:1,1000',
-            'page_number'=> 'required|integer|digits_between:1,10000',
-            'publication_date'=> 'required|',
-            'reprint_date'=> 'required|after:publication_date',
-            'category_id'=> 'required',
-            'language_id'=> 'required',
-            'publisher_id'=> 'required',
-            'author_id'=> 'required',
-            'images'=> 'required',
-        ]);
         $publisher = Book::where('ma', $ma)->get();
         if($publisher=='[]'){
             return 'Nhà xuất bản không tồn tại';
@@ -138,6 +142,17 @@ class BooksController extends Controller
         // return "hello";
     }
     public function getAll(){
-        return Book::get();
+        return Book::get()->take(8);
+    }
+    public function getlistbooktype($ma){
+        $data = Book::where('author_id', $ma)->take(3)->get();
+        if($data == '[]'){
+            $data = Book::where('category_id', $ma)->take(3)->get();
+        }
+        return $data;
+    }
+    public function getnewlistbooktype(){
+        $data = Book::orderBy('updated_at')->take(3)->get();
+        return $data;
     }
 }

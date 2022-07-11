@@ -1,11 +1,24 @@
 require('./bootstrap');
 window.Vue = require('vue').default
-import { router } from './router.js'
+
+import {
+    router
+} from './router.js'
 import BootstrapVue from 'bootstrap-vue'
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from 'firebase/firestore/lite';
-import { getStorage } from "firebase/storage";
+import {
+    initializeApp
+} from "firebase/app";
+import {
+    getAnalytics
+} from "firebase/analytics";
+import {
+    getFirestore
+} from 'firebase/firestore/lite';
+import {
+    getStorage
+} from "firebase/storage";
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
 // import VueFire from 'vuefire'
 
 
@@ -28,11 +41,12 @@ const storage = getStorage(store);
 Vue.use(BootstrapVue);
 Vue.component('main-app', require('./components/Mainapp.vue').default);
 Vue.component('account-admin', require('./components/admin/Header.vue').default);
-Vue.component('nav-admin', require('./components/admin/Nav.vue').default);
 Vue.component('trang-chu', require('./components/user/Trangchu.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('login-admin', require('./components/admin/Login.vue').default);
 // Vue.component('home', require('./components/admin/Home.vue').default);
 // Vue.component('author', require('./components/author/index.vue').default);
+
 const app = new Vue({
     el: '#app',
     router,

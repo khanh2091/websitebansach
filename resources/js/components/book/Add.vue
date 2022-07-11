@@ -83,6 +83,9 @@
                                         >Mã sách:
                                     </label>
                                     <input
+                                        :class="{
+                                            'is-invalid': errors.ma != null,
+                                        }"
                                         class="form-control"
                                         type="text"
                                         id="ma"
@@ -90,10 +93,12 @@
                                         v-model="ma"
                                         placeholder="Mã sách"
                                         value=""
-                                        required
                                     />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống mã
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.ma != null"
+                                    >
+                                        {{ errors.ma }}
                                     </div>
                                 </div>
                                 <div class="my-4">
@@ -101,6 +106,9 @@
                                         >Tên sách:
                                     </label>
                                     <input
+                                        :class="{
+                                            'is-invalid': errors.title != null,
+                                        }"
                                         class="form-control"
                                         type="text"
                                         id="title"
@@ -110,29 +118,14 @@
                                         value=""
                                         required
                                     />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống giá
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.title != null"
+                                    >
+                                        {{ errors.title }}
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col">
-                                        <label for="slug" class="col-form-label"
-                                            >Slug:
-                                        </label>
-                                        <input
-                                            class="form-control"
-                                            type="text"
-                                            id="slug"
-                                            name="slug"
-                                            v-model="slug"
-                                            placeholder="Tên sách không không dấu không cách"
-                                            value=""
-                                            required
-                                        />
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống đơn vị tính
-                                        </div>
-                                    </div>
                                     <div class="col">
                                         <label
                                             for="page_number"
@@ -147,10 +140,17 @@
                                             name="page_number"
                                             placeholder="Số trang sách"
                                             value=""
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.page_number != null,
+                                            }"
                                             required
                                         />
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống đơn vị tính
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.page_number != null"
+                                        >
+                                            {{ errors.page_number }}
                                         </div>
                                     </div>
                                 </div>
@@ -169,10 +169,17 @@
                                             name="Gia"
                                             placeholder="Giá"
                                             value=""
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.price != null,
+                                            }"
                                             required
                                         />
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống giá
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.price != null"
+                                        >
+                                            {{ errors.price }}
                                         </div>
                                     </div>
                                     <div class="col">
@@ -182,6 +189,10 @@
                                             >Số lượng:
                                         </label>
                                         <input
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.quantity != null,
+                                            }"
                                             class="form-control"
                                             type="number"
                                             min="0"
@@ -193,8 +204,11 @@
                                             value=""
                                             required
                                         />
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.quantity != null"
+                                        >
+                                            {{ errors.quantity }}
                                         </div>
                                     </div>
                                 </div>
@@ -207,6 +221,10 @@
                                         <select
                                             class="form-select"
                                             v-model="selectedNN"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.selectedNN != null,
+                                            }"
                                         >
                                             <option :value="null">
                                                 Chọn ngôn ngữ
@@ -218,8 +236,11 @@
                                                 {{ tamp.name }}
                                             </option>
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.selectedNN != null"
+                                        >
+                                            {{ errors.selectedNN }}
                                         </div>
                                     </div>
                                     <div class="col">
@@ -229,6 +250,10 @@
                                         <select
                                             class="form-select"
                                             v-model="selectedNXB"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.selectedNXB != null,
+                                            }"
                                         >
                                             <option :value="null">
                                                 Chọn nhà xuất bản
@@ -240,8 +265,11 @@
                                                 {{ tamp.name }}
                                             </option>
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.selectedNXB != null"
+                                        >
+                                            {{ errors.selectedNXB }}
                                         </div>
                                     </div>
                                 </div>
@@ -253,6 +281,10 @@
                                         <select
                                             class="form-select"
                                             v-model="selectedTL"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.selectedTL != null,
+                                            }"
                                         >
                                             <option :value="null">
                                                 Chọn thể loại:
@@ -264,8 +296,11 @@
                                                 {{ tamp.title }}
                                             </option>
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.selectedTL != null"
+                                        >
+                                            {{ errors.selectedTL }}
                                         </div>
                                     </div>
                                     <div class="col">
@@ -278,6 +313,10 @@
                                         <select
                                             class="form-select"
                                             v-model="selectedTG"
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.selectedTG != null,
+                                            }"
                                         >
                                             <option :value="null">
                                                 Chọn nhà tác giả:
@@ -290,74 +329,66 @@
                                                 {{ tamp.lastname }}
                                             </option>
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.selectedTG != null"
+                                        >
+                                            {{ errors.selectedTG }}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <label for="publication_date"
-                                            >Ngày xuất bản:</label
-                                        >
-                                        <div class="input-group">
-                                            <span class="input-group-text"
-                                                ><svg
-                                                    class="icon icon-xs text-gray-600"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                        clip-rule="evenodd"
-                                                    ></path>
-                                                </svg> </span
-                                            ><input
-                                                data-datepicker=""
-                                                class="form-control datepicker-input"
+                                        <div class="form-group">
+                                            <label for="company"
+                                                >Ngày xuất bản:</label
+                                            >
+                                            <br />
+                                            <date-picker
+                                                :class="{
+                                                    'is-invalid':
+                                                        errors.publication_date !=
+                                                        null,
+                                                }"
                                                 v-model="publication_date"
-                                                id="publication_date"
-                                                type="text"
-                                                placeholder="dd/mm/yyyy"
-                                                required=""
-                                            />
-                                        </div>
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                                placeholder="Chọn ngày"
+                                                valueType="format"
+                                            ></date-picker>
+                                            <div
+                                                class="invalid-feedback"
+                                                v-if="
+                                                    errors.publication_date !=
+                                                    null
+                                                "
+                                            >
+                                                {{ errors.publication_date }}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <label for="reprint_date"
-                                            >Ngày tái bản:</label
-                                        >
-                                        <div class="input-group">
-                                            <span class="input-group-text"
-                                                ><svg
-                                                    class="icon icon-xs text-gray-600"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                        clip-rule="evenodd"
-                                                    ></path>
-                                                </svg> </span
-                                            ><input
-                                                data-datepicker=""
-                                                class="form-control datepicker-input"
+                                        <div class="form-group">
+                                            <label for="company"
+                                                >Ngày tái bản:</label
+                                            >
+                                            <br />
+                                            <date-picker
+                                                :class="{
+                                                    'is-invalid':
+                                                        errors.publication_date !=
+                                                        null,
+                                                }"
                                                 v-model="reprint_date"
-                                                id="reprint_date"
-                                                type="text"
-                                                placeholder="dd/mm/yyyy"
-                                                required=""
-                                            />
-                                        </div>
-                                        <div class="invalid-feedback">
-                                            Không được bỏ trống số lượng
+                                                placeholder="Chọn ngày"
+                                                valueType="format"
+                                            ></date-picker>
+                                            <div
+                                                class="invalid-feedback"
+                                                v-if="
+                                                    errors.reprint_date != null
+                                                "
+                                            >
+                                                {{ errors.reprint_date }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -367,6 +398,10 @@
                                     </label>
                                     <div class="input-group">
                                         <input
+                                            :class="{
+                                                'is-invalid':
+                                                    errors.imageData != null,
+                                            }"
                                             class="form-control"
                                             ref="fileInput"
                                             type="file"
@@ -374,8 +409,11 @@
                                             @input="selectImgFile"
                                             required
                                         />
-                                        <div class="invalid-feedback">
-                                            Chưa chọn hình
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.imageData != null"
+                                        >
+                                            {{ errors.imageData }}
                                         </div>
                                     </div>
                                 </div>
@@ -420,6 +458,9 @@
     </div>
 </template>
 <script>
+import DatePicker from "vue2-datepicker";
+import "vue2-datepicker/index.css";
+import "bootstrap";
 import axios from "axios";
 import swal from "sweetalert";
 import firebase from "firebase/compat/app";
@@ -428,6 +469,7 @@ import "firebase/compat/firestore";
 import { getStorage, ref, uploadString } from "firebase/storage";
 import moment from "moment";
 export default {
+    components: { DatePicker },
     data() {
         return {
             message: {},
@@ -446,8 +488,8 @@ export default {
             selectedTL: null,
             selectedNN: null,
             selectedNXB: null,
-            publication_date: "",
-            reprint_date: "",
+            publication_date: null,
+            reprint_date: null,
             description: "",
             image: null,
             imagepreview: null,
@@ -455,6 +497,7 @@ export default {
             picture: null,
             imageData: null,
             uploadValue: 0,
+            errors: [],
         };
     },
     mounted() {
@@ -532,40 +575,88 @@ export default {
             }
         },
         formSubmit() {
-            // alert(moment(this.publication_date).format('YYYY-MM-DD h:mm:ss') + " " + moment(this.reprint_date).format('YYYY-MM-DD h:mm:ss'));
-            axios
-                .post(`/api/admin/addbook`, {
-                    ma: this.ma,
-                    title: this.title,
-                    slug: this.slug,
-                    price: this.price,
-                    quantity: this.quantity,
-                    sold: 0,
-                    images: this.imageData.name,
-                    page_number: this.page_number,
-                    description: this.description,
-                    publication_date: moment(this.publication_date).format('YYYY-MM-YY'),
-                    reprint_date: moment(this.reprint_date).format('YYYY-MM-YY'),
-                    category_id: this.selectedTL,
-                    language_id: this.selectedNN,
-                    publisher_id: this.selectedNXB,
-                    author_id: this.selectedTG,
-                    discount: 0,
-                })
-                .then((response) => {
-                    swal("Thêm thành công!", "", "success");
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    this.message = this.error;
-                });
-            const storage = getStorage();
-            const storageRef = ref(storage, this.imageData.name);
-            uploadString(storageRef, this.filePreview, "data_url").then(
-                (snapshot) => {
-                    console.log(snapshot);
-                }
-            );
+            this.errors = [];
+            if (this.ma == "") {
+                this.errors.ma = "Chưa nhập mã";
+            }
+            if (this.title == "") {
+                this.errors.title = "Chưa nhập tên";
+            }
+            if (this.price == "") {
+                this.errors.price = "Chưa nhập tên";
+            }
+            if (this.page_number == "") {
+                this.errors.page_number = "Chưa nhập số trang sách";
+            }
+            if (this.quantity == "") {
+                this.errors.quantity = "Chưa nhập số lượng sách";
+            }
+            if (this.publication_date == null) {
+                this.errors.publication_date = "Chưa nhập ngày xuất bản";
+            }
+            if (this.reprint_date == null) {
+                this.errors.reprint_date = "Chưa nhập ngày tái bản";
+            }
+            if (this.selectedTL == null) {
+                this.errors.selectedTL = "Chưa chọn thể loại";
+            }
+            if (this.selectedTG == null) {
+                this.errors.selectedTG = "Chưa chọn tác giả";
+            }
+            if (this.selectedNN == null) {
+                this.errors.selectedNN = "Chưa chọn ngôn ngữ";
+            }
+            if (this.selectedNXB == null) {
+                this.errors.selectedNXB = "Chưa chọn nhà xuát bản";
+            }
+            if (this.imageData == null) {
+                this.errors.imageData = "Chưa chọn hình";
+            }
+            if (
+                moment(String(this.publication_date)).format("MMM Do YY") <=
+                moment(String(this.reprint_date)).format("MMM Do YY")
+            ) {
+                this.errors.publication_date = "Ngày xuất bản lớn ngày tái bản";
+                this.errors.reprint_date = "Ngày tái bản nhỏ ngày xuất bản";
+            } 
+            // if (this.imageData == null) {
+            //    swal("Lỗi! ", "Chưa chọn hình!");
+            // }
+            else {
+                axios
+                    .post(`/api/admin/addbook`, {
+                        ma: this.ma,
+                        title: this.title,
+                        slug: this.slug,
+                        price: this.price,
+                        quantity: this.quantity,
+                        sold: 0,
+                        images: this.imageData.name,
+                        page_number: this.page_number,
+                        description: this.description,
+                        publication_date: this.publication_date,
+                        reprint_date: this.reprint_date,
+                        category_id: this.selectedTL,
+                        language_id: this.selectedNN,
+                        publisher_id: this.selectedNXB,
+                        author_id: this.selectedTG,
+                        discount: 0,
+                    })
+                    .then((response) => {
+                        swal("Thêm thành công!", "", "success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        this.message = this.error;
+                    });
+                const storage = getStorage();
+                const storageRef = ref(storage, this.imageData.name);
+                uploadString(storageRef, this.filePreview, "data_url").then(
+                    (snapshot) => {
+                        console.log(snapshot);
+                    }
+                );
+            }
         },
     },
 };

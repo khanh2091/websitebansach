@@ -8,24 +8,24 @@
             <div id="top">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-6 offer mb-3 mb-lg-0">
-                            <a href="#" class="btn btn-success btn-sm"
-                                >Offer of the day</a
-                            ><a href="#" class="ml-1"
-                                >Get flat 35% off on orders over $50!</a
-                            >
-                        </div>
+                        <div class="col-lg-6 offer mb-3 mb-lg-0"></div>
                         <div class="col-lg-6 text-center text-lg-right">
                             <ul class="menu list-inline mb-0">
-                                <li v-if="auth == ''" class="list-inline-item">
+                                <li
+                                    v-if="dataUser.length == 0"
+                                    class="list-inline-item"
+                                >
                                     <a
                                         href="#"
                                         data-toggle="modal"
                                         data-target="#login-modal"
-                                        >Login</a
+                                        >Đăng nhập</a
                                     >
                                 </li>
-                                <li v-if="auth == ''" class="list-inline-item">
+                                <li
+                                    v-if="dataUser.length == 0"
+                                    class="list-inline-item"
+                                >
                                     <router-link
                                         :class="[
                                             {
@@ -34,24 +34,31 @@
                                             },
                                         ]"
                                         :to="{ name: 'register' }"
-                                        >Regiter</router-link
+                                        >Đăng ký</router-link
                                     >
                                 </li>
                                 <li
-                                    v-if="auth == 'loggedin'"
+                                    v-if="dataUser.length != 0"
                                     class="list-inline-item"
                                 >
-                                    <a
-                                        href="#"
-                                        data-toggle="modal"
-                                        data-target="#login-modal"
-                                        >username</a
-                                    >
+                                    <router-link
+                                        :class="[
+                                            {
+                                                active:
+                                                    $route.name === 'profile',
+                                            },
+                                        ]"
+                                        :to="{ name: 'profile' }">{{
+                                        dataUser.data.user.firstname +
+                                        " " +
+                                        dataUser.data.user.lastname
+                                    }}</router-link>
                                 </li>
-                                <li v-if="auth == 'loggedin'" class="list-inline-item">
-                                    <a href="contact.html"
-                                        >Logout</a
-                                    >
+                                <li
+                                    v-if="dataUser.length != 0"
+                                    class="list-inline-item"
+                                >
+                                    <span @click="logout">Logout</span>
                                 </li>
                                 <!-- <li class="list-inline-item">
                                     <a href="contact.html">Contact</a>
@@ -74,7 +81,9 @@
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Customer login</h5>
+                                <h5 class="modal-title">
+                                    Khách hàng đăng nhập
+                                </h5>
                                 <button
                                     type="button"
                                     data-dismiss="modal"
@@ -84,13 +93,12 @@
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
+                            <!-- form login -->
                             <div class="modal-body">
-                                <form
-                                    action="customer-orders.html"
-                                    method="post"
-                                >
+                                <form v-on:submit.prevent="login">
                                     <div class="form-group">
                                         <input
+                                            v-model="emaillogin"
                                             id="email-modal"
                                             type="text"
                                             placeholder="email"
@@ -99,6 +107,7 @@
                                     </div>
                                     <div class="form-group">
                                         <input
+                                            v-model="passwordlogin"
                                             id="password-modal"
                                             type="password"
                                             placeholder="password"
@@ -107,19 +116,29 @@
                                     </div>
                                     <p class="text-center">
                                         <button class="btn btn-primary">
-                                            <i class="fa fa-sign-in"></i> Log in
+                                            <i class="fa fa-sign-in"></i> Đăng
+                                            nhập
                                         </button>
                                     </p>
                                 </form>
                                 <p class="text-center text-muted">
-                                    Not registered yet?
+                                    Chưa đăng ký tài khoản?
                                 </p>
                                 <p class="text-center text-muted">
-                                    <a href="register.html"
-                                        ><strong>Register now</strong></a
-                                    >! It is easy and done in 1 minute and gives
-                                    you access to special discounts and much
-                                    more!
+                                    <router-link
+                                        :class="[
+                                            {
+                                                active:
+                                                    $route.name === 'register',
+                                            },
+                                        ]"
+                                        :to="{ name: 'register' }"
+                                        ><strong
+                                            >Đăng ký ngay</strong
+                                        ></router-link
+                                    >! Nó dễ dàng và được thực hiện trong 1 phút
+                                    và cho bạn có quyền giảm giá đặc biệt và
+                                    nhiều hơn!
                                 </p>
                             </div>
                         </div>
@@ -128,17 +147,25 @@
                 <!-- *** TOP BAR END ***-->
             </div>
             <nav class="navbar navbar-expand-lg">
-                <div class="container">
-                    <a href="index.html" class="navbar-brand home"
+                <div class="container" @click="loadpage">
+                    <router-link
+                        :class="[
+                            {
+                                active: $route.name == 'trangchu',
+                            },
+                        ]"
+                        :to="{ name: 'trangchu' }"
                         ><img
-                            src="img/logo.png"
+                            src="/img/logo.png"
                             alt="Obaju logo"
                             class="d-none d-md-inline-block"
                         /><img
-                            src="img/logo-small.png"
+                            src="/img/logo-small.png"
                             alt="Obaju logo"
                             class="d-inline-block d-md-none"
-                        /><span class="sr-only">Obaju - go to homepage</span></a
+                        /><span class="sr-only"
+                            >Obaju - go to homepage</span
+                        ></router-link
                     >
                     <div class="navbar-buttons">
                         <button
@@ -164,18 +191,32 @@
                             ><i class="fa fa-shopping-cart"></i
                         ></a>
                     </div>
+                    <!-- menu -->
                     <div id="navigation" class="collapse navbar-collapse">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
+                            <li class="nav-item"  @click="loadpage"> 
+                                <router-link 
+                                    :class="[
+                                        {
+                                            active: $route.name == 'trangchu',
+                                        },
+                                    ]"
+                                    :to="{ name: 'trangchu' }"
+                                    class="nav-link"
+                                    >Trang chủ</router-link
+                                >
+                            </li>
+                            <li class="nav-item" @click="loadpage">
                                 <router-link
-                                        :class="[
-                                            {
-                                                active:
-                                                    $route.name == 'trangchu',
-                                            },
-                                        ]"
-                                        :to="{ name: 'trangchu' }"
-                                        class="nav-link">Home</router-link>
+                                    :class="[
+                                        {
+                                            active: $route.name == 'Sách',
+                                        },
+                                    ]"
+                                    :to="{ name: 'allbook' }"
+                                    class="nav-link"
+                                    >Sách</router-link
+                                >
                             </li>
                             <li class="nav-item dropdown menu-large">
                                 <a
@@ -184,541 +225,104 @@
                                     data-hover="dropdown"
                                     data-delay="200"
                                     class="dropdown-toggle nav-link"
-                                    >Men<b class="caret"></b
+                                    >Danh mục<b class="caret"></b
                                 ></a>
                                 <ul class="dropdown-menu megamenu">
                                     <li>
                                         <div class="row">
                                             <div class="col-md-6 col-lg-3">
-                                                <h5>Clothing</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >T-shirts</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Shirts</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Pants</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Accessories</a
+                                                <h5>Tác giả</h5>
+                                                <ul
+                                                    class="list-unstyled mb-3"
+                                                    v-for="tamp in tacgia"
+                                                >
+                                                    <li
+                                                        class="nav-item"
+                                                    >
+                                                        <router-link
+                                                            :to="{
+                                                                name: 'sortbook',
+                                                                params: {
+                                                                    id: tamp.ma,
+                                                                },
+                                                            }"
+                                                            >{{
+                                                                tamp.firstname +
+                                                                " " +
+                                                                tamp.lastname
+                                                            }}</router-link
                                                         >
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6 col-lg-3">
-                                                <h5>Shoes</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Casual</a
+                                                <h5>Thể loại</h5>
+                                                <ul
+                                                    class="list-unstyled mb-3"
+                                                    v-for="tamp in theloai"
+                                                >
+                                                    <li
+                                                        class="nav-item"
+                                                        @click="loadpage"
+                                                    >
+                                                        <router-link
+                                                            :to="{
+                                                                name: 'sortbook',
+                                                                params: {
+                                                                    id: tamp.ma,
+                                                                },
+                                                            }"
+                                                            >{{
+                                                                tamp.title
+                                                            }}</router-link
                                                         >
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6 col-lg-3">
-                                                <h5>Accessories</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Casual</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Casual</a
+                                                <h5>Ngôn ngữ</h5>
+                                                <ul
+                                                    class="list-unstyled mb-3"
+                                                    v-for="tamp in ngonngu"
+                                                >
+                                                    <li
+                                                        class="nav-item"
+                                                        @click="loadpage"
+                                                    >
+                                                        <router-link
+                                                            :to="{
+                                                                name: 'sortbook',
+                                                                params: {
+                                                                    id: tamp.ma,
+                                                                },
+                                                            }"
+                                                            >{{
+                                                                tamp.name
+                                                            }}</router-link
                                                         >
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6 col-lg-3">
-                                                <h5>Featured</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                                <h5>Looks and trends</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown menu-large">
-                                <a
-                                    href="#"
-                                    data-toggle="dropdown"
-                                    data-hover="dropdown"
-                                    data-delay="200"
-                                    class="dropdown-toggle nav-link"
-                                    >Ladies<b class="caret"></b
-                                ></a>
-                                <ul class="dropdown-menu megamenu">
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>Clothing</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >T-shirts</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Shirts</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Pants</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Accessories</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>Shoes</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Casual</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>Accessories</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Casual</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Casual</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                                <h5>Looks and trends</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Trainers</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Sandals</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Hiking shoes</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <div class="banner">
-                                                    <a href="#"
-                                                        ><img
-                                                            src="img/banner.jpg"
-                                                            alt=""
-                                                            class="img img-fluid"
-                                                    /></a>
-                                                </div>
-                                                <div class="banner">
-                                                    <a href="#"
-                                                        ><img
-                                                            src="img/banner2.jpg"
-                                                            alt=""
-                                                            class="img img-fluid"
-                                                    /></a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown menu-large">
-                                <a
-                                    href="#"
-                                    data-toggle="dropdown"
-                                    data-hover="dropdown"
-                                    data-delay="200"
-                                    class="dropdown-toggle nav-link"
-                                    >Template<b class="caret"></b
-                                ></a>
-                                <ul class="dropdown-menu megamenu">
-                                    <li>
-                                        <div class="row">
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>Shop</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="index.html"
-                                                            class="nav-link"
-                                                            >Homepage</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category.html"
-                                                            class="nav-link"
-                                                            >Category - sidebar
-                                                            left</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category-right.html"
-                                                            class="nav-link"
-                                                            >Category - sidebar
-                                                            right</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="category-full.html"
-                                                            class="nav-link"
-                                                            >Category - full
-                                                            width</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="detail.html"
-                                                            class="nav-link"
-                                                            >Product detail</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>User</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="register.html"
-                                                            class="nav-link"
-                                                            >Register / login</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="customer-orders.html"
-                                                            class="nav-link"
-                                                            >Orders history</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="customer-order.html"
-                                                            class="nav-link"
-                                                            >Order history
-                                                            detail</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="customer-wishlist.html"
-                                                            class="nav-link"
-                                                            >Wishlist</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="customer-account.html"
-                                                            class="nav-link"
-                                                            >Customer account /
-                                                            change password</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>Order process</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="basket.html"
-                                                            class="nav-link"
-                                                            >Shopping cart</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="checkout1.html"
-                                                            class="nav-link"
-                                                            >Checkout - step
-                                                            1</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="checkout2.html"
-                                                            class="nav-link"
-                                                            >Checkout - step
-                                                            2</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="checkout3.html"
-                                                            class="nav-link"
-                                                            >Checkout - step
-                                                            3</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="checkout4.html"
-                                                            class="nav-link"
-                                                            >Checkout - step
-                                                            4</a
-                                                        >
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6 col-lg-3">
-                                                <h5>Pages and blog</h5>
-                                                <ul class="list-unstyled mb-3">
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="blog.html"
-                                                            class="nav-link"
-                                                            >Blog listing</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="post.html"
-                                                            class="nav-link"
-                                                            >Blog Post</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="faq.html"
-                                                            class="nav-link"
-                                                            >FAQ</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="text.html"
-                                                            class="nav-link"
-                                                            >Text page</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="text-right.html"
-                                                            class="nav-link"
-                                                            >Text page - right
-                                                            sidebar</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="404.html"
-                                                            class="nav-link"
-                                                            >404 page</a
-                                                        >
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a
-                                                            href="contact.html"
-                                                            class="nav-link"
-                                                            >Contact</a
+                                                <h5>Nhà xuất bản</h5>
+                                                <ul
+                                                    class="list-unstyled mb-3"
+                                                    v-for="tamp in nhaxuatban"
+                                                >
+                                                    <li
+                                                        class="nav-item"
+                                                        @click="loadpage"
+                                                    >
+                                                        <router-link
+                                                            :to="{
+                                                                name: 'sortbook',
+                                                                params: {
+                                                                    id: tamp.ma,
+                                                                },
+                                                            }"
+                                                            >{{
+                                                                tamp.name
+                                                            }}</router-link
                                                         >
                                                     </li>
                                                 </ul>
@@ -745,11 +349,16 @@
                                 id="basket-overview"
                                 class="navbar-collapse collapse d-none d-lg-block"
                             >
-                                <a
-                                    href="basket.html"
+                                <router-link
+                                    :class="[
+                                        { active: $route.name === 'cart' },
+                                    ]"
+                                    :to="{ name: 'cart' }"
                                     class="btn btn-primary navbar-btn"
                                     ><i class="fa fa-shopping-cart"></i
-                                    ><span>3 items in cart</span></a
+                                    ><span
+                                        >Giỏ hàng</span
+                                    ></router-link
                                 >
                             </div>
                         </div>
@@ -758,15 +367,24 @@
             </nav>
             <div id="search" class="collapse">
                 <div class="container">
-                    <form role="search" class="ml-auto">
+                    <form
+                        role="search"
+                        class="ml-auto"
+                        v-on:submit.prevent="searchSubmit"
+                    >
                         <div class="input-group">
                             <input
+                                v-model="search"
                                 type="text"
-                                placeholder="Search"
+                                placeholder="Tìm kiếm"
                                 class="form-control"
                             />
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-primary">
+                                <button
+                                    @click="searchSubmit"
+                                    type="button"
+                                    class="btn btn-primary"
+                                >
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -775,7 +393,7 @@
                 </div>
             </div>
         </header>
-        <router-view></router-view>
+        <router-view :getCartCount="getcartcount"></router-view>
         <!--
     *** FOOTER ***
     _________________________________________________________
@@ -900,7 +518,7 @@
                 <div class="row">
                     <div class="col-lg-6 mb-2 mb-lg-0">
                         <p class="text-center text-lg-left">
-                            ©2019 Your name goes here.
+                            ©2022 Nguyễn Quốc Khánh.
                         </p>
                     </div>
                     <div class="col-lg-6">
@@ -919,27 +537,145 @@
 </template>
 <script>
 import EventBus from "../EventBus.vue";
-
+import $ from "jquery";
 export default {
     data() {
         return {
-            auth: '',
-            user: '',
+            dataUser: [],
+            auth: "",
+            email: "",
+            name: "",
+            emaillogin: "",
+            passwordlogin: "",
+            search: "",
+            tacgia: [],
+            theloai: [],
+            ngonngu: [],
+            nhaxuatban: [],
+            carts: 0,
         };
     },
+    watch: {
+        search(q) {
+            this.searchSubmit(q);
+        },
+    },
     mounted() {
-       this.loadEventBus();
+        this.loadEventBus();
+        this.loadBook();
+        // this.tamp();
+        if (localStorage.usertoken != null) {
+            this.getUser();
+        }
+        if (localStorage.cart != null) {
+            this.carts = JSON.parse(localStorage.getItem("cart")).length;
+        }
+        // console.log(JSON.parse(localStorage.getItem("cart")).length);
+        // localStorage.removeItem("cart");
     },
     methods: {
-        logout() {
-            localStorage.removeItem("usertoken");
+        formatPrice(value) {
+            let val = (value / 1).toFixed(2).replace(".", ",");
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
-        loadEventBus(){
-             EventBus.$on("logged-in", (status) => {
-            this.auth = status;
-        });
-        console.log(EventBus.$on("logged-in", data=>{ console.log(data)}));
-        }
+        getcartcount: function (count) {
+            this.carts = count;
+        },
+        loadpage: function () {
+            this.$router.go();
+        },
+        searchSubmit: function (q) {
+            // alert('hello');
+            EventBus.$emit("search", this.search);
+            const timkiem = this.search;
+            this.$router.push({ name: "search", query: { timkiem } });
+        },
+        tamp: function () {
+            console.log(localStorage.usertoken);
+            console.log(this.dataUser);
+        },
+        logout: function () {
+            localStorage.removeItem("usertoken");
+            localStorage.removeItem("cart");
+            this.$router.go();
+            this.tamp();
+        },
+        loadEventBus: function () {
+            EventBus.$on("logged-in", (status) => {
+                this.auth = status;
+            });
+        },
+        getUser: function () {
+            axios
+                .get("/api/profile", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.usertoken}`,
+                    },
+                })
+                .then((response) => {
+                    this.dataUser = response;
+                    // console.log(this.dataUser);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        login: function () {
+            // console.log(this.emaillogin + this.passwordlogin);
+            axios
+                .post("/api/login", {
+                    email: this.emaillogin,
+                    password: this.passwordlogin,
+                })
+                .then((res) => {
+                    localStorage.setItem("usertoken", res.data.token);
+                    this.loginemail = "";
+                    this.loginpassword = "";
+                    this.$router.go();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+            this.emitMethod();
+        },
+        emitMethod() {
+            EventBus.$emit("logged-in", "loggedin");
+        },
+        loadBook: function () {
+            axios
+                .get("/api/admin/all_categoryHead")
+                .then((response) => {
+                    this.theloai = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/admin/all_languageHead")
+                .then((response) => {
+                    this.ngonngu = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/admin/all_authorHead")
+                .then((response) => {
+                    this.tacgia = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/admin/all_publisherHead")
+                .then((response) => {
+                    this.nhaxuatban = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
     },
 };
 </script>

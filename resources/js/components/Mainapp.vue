@@ -30,6 +30,7 @@
         <h2>hello</h2>
     </div> -->
     <nav
+        v-if="dataUser.user.role == 'employee' || dataUser.user.role == 'admin'"
         id="sidebarMenu"
         class="sidebar d-lg-block bg-gray-800 text-white collapse"
         data-simplebar
@@ -100,9 +101,14 @@
 
             <ul class="nav flex-column pt-3 pt-md-0">
                 <li class="nav-item">
-                    <router-link class="nav-link" :class="[{active: $route.name == 'home'}]" :to="{name: 'home'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name == 'home' }]"
+                        :to="{ name: 'home' }"
+                    >
                         <span class="sidebar-icon">
-                            <img :src="'/img/brand/light.svg'"
+                            <img
+                                :src="'/img/brand/light.svg'"
                                 height="20"
                                 width="20"
                                 alt="Volt Logo"
@@ -113,7 +119,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <router-link class="nav-link" :class="[{active: $route.name == 'home'}]" :to="{name: 'home'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name == 'home' }]"
+                        :to="{ name: 'home' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 class="icon icon-xs me-2"
@@ -137,7 +147,11 @@
 
                 <div class="sidebar-heading">SHOP</div>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'order' }]"
+                        :to="{ name: 'order' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +169,7 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Đơn hàng</span>
-                    </a>
+                    </router-link>
                 </li>
 
                 <li class="nav-item">
@@ -185,7 +199,11 @@
                 <div class="sidebar-heading">THÔNG TIN</div>
 
                 <li class="nav-item">
-                    <router-link class="nav-link" :class="[{active: $route.name === 'book'}]" :to="{name: 'book'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'book' }]"
+                        :to="{ name: 'book' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 class="icon icon-xs me-2"
@@ -207,7 +225,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <router-link class="nav-link" :class="[{active: $route.name === 'categories'}]" :to="{name: 'categories'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'categories' }]"
+                        :to="{ name: 'categories' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 class="icon icon-xs me-2"
@@ -230,7 +252,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <router-link class="nav-link" :class="[{active: $route.name === 'author'}]" :to="{name: 'author'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'author' }]"
+                        :to="{ name: 'author' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -252,7 +278,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <router-link class="nav-link" :class="[{active: $route.name === 'language'}]" :to="{name: 'language'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'language' }]"
+                        :to="{ name: 'language' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -274,7 +304,11 @@
                 </li>
 
                 <li class="nav-item">
-                   <router-link class="nav-link" :class="[{active: $route.name === 'publisher'}]" :to="{name: 'publisher'}">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'publisher' }]"
+                        :to="{ name: 'publisher' }"
+                    >
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -299,8 +333,11 @@
 
                 <div class="sidebar-heading">CHUNG</div>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item"  v-if="dataUser.user.role == 'admin'">
+                    <router-link
+                        class="nav-link"
+                        :class="[{ active: $route.name === 'account' }]"
+                        :to="{ name: 'account' }">
                         <span class="sidebar-icon">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -318,32 +355,72 @@
                             </svg>
                         </span>
                         <span class="sidebar-text">Tài khoản</span>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="" class="nav-link">
-                        <span class="sidebar-icon">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                class="icon icon-xs me-2"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                stroke-width="2"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"
-                                />
-                            </svg>
-                        </span>
-                        <span class="sidebar-text">Quản Lý Tập Tin</span>
-                    </a>
+                    </router-link>
                 </li>
             </ul>
         </div>
     </nav>
-    
 </template>
+<script>
+import $ from "jquery";
+export default {
+    data() {
+        return {
+            dataUser: [],
+            role: "",
+            errorAccunt: null,
+        };
+    },
+    watch: {
+        search(q) {
+            this.searchSubmit(q);
+        },
+    },
+    mounted() {
+        // this.tamp();
+        if (localStorage.usertoken != null) {
+            this.getUser();
+        }
+        if (localStorage.usertoken == null) {
+            this.$router.push({ path: "/login_admin" });
+            this.$router.go();
+        }
+    },
+    methods: {
+        logout: function () {
+            localStorage.removeItem("usertoken");
+            localStorage.removeItem("cart");
+            this.$router.push({ path: "/login_admin" });
+            this.$router.go();
+        },
+        getUser: function () {
+            axios
+                .get("/api/profile", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.usertoken}`,
+                    },
+                })
+                .then((response) => {
+                    this.dataUser = response.data;
+                    console.log(this.dataUser);
+                    if (this.dataUser == "Đăng nhập quá hạn") {
+                        this.$router.push({ path: "/login_admin" });
+                        this.$router.go();
+                    }
+                    if (this.dataUser.user.role == "customer") {
+                        alert("Tài khoản của bạn không có quyến truy cập");
+                        this.$router.push({ path: "/login_admin" });
+                        this.$router.go();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            if (this.errorAccunt != null) {
+                this.$router.push({ path: "/login_admin" });
+                this.$router.go();
+            }
+        },
+    },
+};
+</script>

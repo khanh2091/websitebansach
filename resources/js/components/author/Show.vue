@@ -323,7 +323,7 @@ export default {
     methods: {
         loadAuthors: function (page = 1) {
             axios
-                .get("/api/author?page=" + page 
+                .get("/api/admin/author?page=" + page 
                 + "&paginate=" + this.paginate
                 + "&q=" + "%" + this.search + "%")
                 .then((response) => {

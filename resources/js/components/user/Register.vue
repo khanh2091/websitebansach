@@ -9,22 +9,32 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="#">Home</a>
+                                        <router-link
+                                        :class="[
+                                            {
+                                                active:
+                                                    $route.name === 'trangchu',
+                                            },
+                                        ]"
+                                        :to="{ name: 'trangchu' }"
+                                    >
+                                        Trang chủ
+                                    </router-link>
                                     </li>
                                     <li
                                         aria-current="page"
                                         class="breadcrumb-item active"
                                     >
-                                        New account / Sign in
+                                        Đăng ký / Đăng nhập
                                     </li>
                                 </ol>
                             </nav>
                         </div>
                         <div class="col-lg-6">
                             <div class="box">
-                                <h1>New account</h1>
+                                <h1>Đăng ký</h1>
                                 <p class="lead">
-                                    Not our registered customer yet?
+                                   Chưa có tài khoản?
                                 </p>
                                 <hr />
                                 <form v-on:submit.prevent="register">
@@ -147,8 +157,8 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="box">
-                                <h1>Login</h1>
-                                <p class="lead">Already our customer?</p>
+                                <h1>Đăng nhập</h1>
+                                <p class="lead">Đã có tài khoản?</p>
                                 <hr />
                                 <form v-on:submit.prevent="login">
                                     <div class="form-group">
@@ -263,7 +273,7 @@ export default {
                     localStorage.setItem("usertoken", res.data.token);
                     this.loginemail = "";
                     this.loginpassword = "";
-                    router.push({name: 'trangchu'})
+                    this.$router.push({ name: 'trangchu'})
                 })
                 .catch((err) => {
                     console.log(err);
@@ -274,7 +284,6 @@ export default {
 
         emitMethod() {
             EventBus.$emit("logged-in", "loggedin");
-            
         },
     },
 };

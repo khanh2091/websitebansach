@@ -1,275 +1,209 @@
 <template>
-    <div >
+    <div>
         <div id="content">
+            <!-- banner -->
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="main-slider" class="owl-carousel owl-theme">
-                            <div class="item">
-                                <img id="myimg0" alt="" class="img-fluid" />
-                            </div>
-                            <div class="item">
-                                <img id="myimg1" alt="" class="img-fluid" />
-                            </div>
-                            <div class="item">
-                                <img id="myimg2" alt="" class="img-fluid" />
-                            </div>
-                            <div class="item">
-                                <img id="myimg3" alt="" class="img-fluid" />
-                            </div>
-                        </div>
-                        <!-- /#main-slider-->
+                        <b-carousel
+                            id="carousel-1"
+                            v-model="slide"
+                            :interval="4000"
+                            controls
+                            indicators
+                            background="#ababab"
+                            img-width="1024"
+                            img-height="480"
+                            style="text-shadow: 1px 1px 2px #333"
+                            @sliding-start="onSlideStart"
+                            @sliding-end="onSlideEnd"
+                        >
+                            <!-- Text slides with image -->
+                            <b-carousel-slide style="height: 600px">
+                                <template #img>
+                                    <img
+                                        id="myimg0"
+                                        class="d-block img-fluid w-100"
+                                        width="1024"
+                                        height="100%"
+                                        src="https://picsum.photos/1024/480/?image=55"
+                                        alt="image slot"
+                                    />
+                                </template>
+                            </b-carousel-slide>
+
+                            <!-- Slides with custom text -->
+                            <b-carousel-slide style="height: 600px">
+                                <template #img>
+                                    <img
+                                        id="myimg1"
+                                        class="d-block img-fluid w-100"
+                                        width="1024"
+                                        height="100%"
+                                        src="https://picsum.photos/1024/480/?image=55"
+                                        alt="image slot"
+                                    />
+                                </template>
+                            </b-carousel-slide>
+
+                            <!-- Slides with image only -->
+                            <b-carousel-slide style="height: 600px">
+                                <template #img>
+                                    <img
+                                        id="myimg2"
+                                        class="d-block img-fluid w-100"
+                                        width="1024"
+                                        height="100%"
+                                        src="https://picsum.photos/1024/480/?image=55"
+                                        alt="image slot"
+                                    />
+                                </template>
+                            </b-carousel-slide>
+
+                            <!-- Slides with img slot -->
+                            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
+                            <b-carousel-slide style="height: 600px">
+                                <template #img>
+                                    <img
+                                        id="myimg3"
+                                        class="d-block img-fluid w-100"
+                                        width="1024"
+                                        height="100%"
+                                        src="https://picsum.photos/1024/480/?image=55"
+                                        alt="image slot"
+                                    />
+                                </template>
+                            </b-carousel-slide>
+
+                            <!-- Slide with blank fluid image to maintain slide aspect ratio -->
+                        </b-carousel>
                     </div>
                 </div>
             </div>
-            <!--
-        *** ADVANTAGES HOMEPAGE ***
-        _________________________________________________________
-        -->
-            <div id="advantages">
-                <div class="container">
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <div
-                                class="box clickable d-flex flex-column justify-content-center mb-0 h-100"
-                            >
-                                <div class="icon">
-                                    <i class="fa fa-heart"></i>
-                                </div>
-                                <h3>
-                                    <a href="#">We love our customers</a>
-                                </h3>
-                                <p class="mb-0">
-                                    We are known to provide best possible
-                                    service ever
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div
-                                class="box clickable d-flex flex-column justify-content-center mb-0 h-100"
-                            >
-                                <div class="icon">
-                                    <i class="fa fa-tags"></i>
-                                </div>
-                                <h3><a href="#">Best prices</a></h3>
-                                <p class="mb-0">
-                                    You can check that the height of the boxes
-                                    adjust when longer text like this one is
-                                    used in one of them.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div
-                                class="box clickable d-flex flex-column justify-content-center mb-0 h-100"
-                            >
-                                <div class="icon">
-                                    <i class="fa fa-thumbs-up"></i>
-                                </div>
-                                <h3>
-                                    <a href="#">100% satisfaction guaranteed</a>
-                                </h3>
-                                <p class="mb-0">
-                                    Free returns on everything for 3 months.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.row-->
-                </div>
-                <!-- /.container-->
-            </div>
-            <!-- /#advantages-->
-            <!-- *** ADVANTAGES END ***-->
-            <!--
-        *** HOT PRODUCT SLIDESHOW ***
-        _________________________________________________________
-        -->
-            <div>
+            <!-- show các loai sach -->
+            <div style="margin-top: 30px">
                 <div class="box py-4">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="mb-0">Hot this week</h2>
+                                <h2 class="mb-0">Sản phẩm mới</h2>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="container">
                     <div class="row products">
-                        <div class="col-lg-3 col-md-4" v-for="book in books.data">
+                        <div
+                            class="col-lg-3 col-md-4"
+                            v-for="book in books.data"
+                        >
                             <div class="product">
                                 <div class="flip-container">
                                     <div class="flipper">
                                         <div class="front">
-                                            <a href="detail.html"
-                                                >{{ showImage(book.images, book.ma) }}<img
+                                            <router-link
+                                                :to="{
+                                                    name: 'detailbook',
+                                                    params: { id: book.ma },
+                                                }"
+                                                >{{
+                                                    showImage(
+                                                        book.images,
+                                                        book.ma
+                                                    )
+                                                }}<img
                                                     :id="book.ma"
-                                                    style="height: 337px; width: 253px;"
+                                                    style="
+                                                        height: 337px;
+                                                        width: 253px;
+                                                    "
                                                     class="img-fluid"
-                                            /></a>
+                                            /></router-link>
                                         </div>
                                         <div class="back">
-                                            <a href="detail.html"
-                                                >{{ showImage(book.images, book.ma) }}<img
+                                            <router-link
+                                                :to="{
+                                                    name: 'detailbook',
+                                                    params: { id: book.ma },
+                                                }"
+                                                >{{
+                                                    showImage(
+                                                        book.images,
+                                                        book.ma
+                                                    )
+                                                }}<img
                                                     :id="book.ma"
-                                                    style="height: 337px; width: 253px;"
+                                                    style="
+                                                        height: 337px;
+                                                        width: 253px;
+                                                    "
                                                     class="img-fluid"
-                                            /></a>
+                                            /></router-link>
                                         </div>
                                     </div>
                                 </div>
-                                </div><a href="detail.html" class="invisible"><img src="img/product1.jpg" alt="" class="img-fluid"></a>
+                                <router-link
+                                    :to="{
+                                        name: 'detailbook',
+                                        params: { id: book.ma },
+                                    }"
+                                    class="invisible"
+                                    ><img
+                                        src="/img/product1.jpg"
+                                        alt=""
+                                        class="img-fluid"
+                                /></router-link>
                                 <div class="text">
                                     <h3>
-                                        <a href="detail.html"
-                                            >{{book.title}}</a
+                                        <router-link
+                                            :to="{
+                                                name: 'detailbook',
+                                                params: { id: book.ma },
+                                            }"
+                                            >{{ book.title }}</router-link
                                         >
                                     </h3>
-                                    <p class="price"><del></del>{{ book.price }} VNĐ</p>
+                                    <p class="price">
+                                        <del></del
+                                        >{{ formatPrice(book.price) }} VNĐ
+                                    </p>
                                     <p class="buttons">
-                                        <a
-                                            href="detail.html"
-                                            class="btn btn-outline-secondary"
-                                            >View detail</a
-                                        ><a
-                                            href="basket.html"
+                                        <span @click="loadpage">
+                                            <router-link
+                                                :to="{
+                                                    name: 'detailbook',
+                                                    params: { id: book.ma },
+                                                }"
+                                                class="btn btn-outline-secondary"
+                                                >Xem chi tiết</router-link
+                                            >
+                                        </span>
+                                        <span
+                                            @click="addToCart(book.ma)"
                                             class="btn btn-primary"
-                                            ><i class="fa fa-shopping-cart"></i
-                                            >Add to cart</a
                                         >
+                                            <i class="fa fa-shopping-cart"></i>
+                                            Thêm vào giỏ
+                                        </span>
                                     </p>
                                 </div>
-                                <!-- /.text-->
                             </div>
-                            <!-- /.product            -->
                         </div>
-
-                        <!-- /.products-->
+                    </div>
+                    <div class="pages">
+                        <p class="loadMore" @click="loadpage">
+                            <router-link
+                                class="btn btn-primary btn-lg"
+                                :to="{ name: 'allbook' }"
+                                >Xem thêm</router-link
+                            >
+                        </p>
                     </div>
                 </div>
 
                 <!-- /#hot-->
                 <!-- *** HOT END ***-->
             </div>
-            <!--
-        *** GET INSPIRED ***
-        _________________________________________________________
-        -->
-            <div class="container">
-                <div class="col-md-12">
-                    <div class="box slideshow">
-                        <h3>Get Inspired</h3>
-                        <p class="lead">
-                            Get the inspiration from our world class designers
-                        </p>
-                        <div id="get-inspired" class="owl-carousel owl-theme">
-                            <div class="item">
-                                <a href="#"
-                                    ><img
-                                        src="img/getinspired1.jpg"
-                                        alt="Get inspired"
-                                        class="img-fluid"
-                                /></a>
-                            </div>
-                            <div class="item">
-                                <a href="#"
-                                    ><img
-                                        src="img/getinspired2.jpg"
-                                        alt="Get inspired"
-                                        class="img-fluid"
-                                /></a>
-                            </div>
-                            <div class="item">
-                                <a href="#"
-                                    ><img
-                                        src="img/getinspired3.jpg"
-                                        alt="Get inspired"
-                                        class="img-fluid"
-                                /></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- *** GET INSPIRED END ***-->
-            <!--
-        *** BLOG HOMEPAGE ***
-        _________________________________________________________
-        -->
-            <div class="box text-center">
-                <div class="container">
-                    <div class="col-md-12">
-                        <h3 class="text-uppercase">From our blog</h3>
-                        <p class="lead mb-0">
-                            What's new in the world of fashion?
-                            <a href="blog.html">Check our blog!</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="col-md-12">
-                    <div id="blog-homepage" class="row">
-                        <div class="col-sm-6">
-                            <div class="post">
-                                <h4><a href="post.html">Fashion now</a></h4>
-                                <p class="author-category">
-                                    By <a href="#">John Slim</a> in
-                                    <a href="">Fashion and style</a>
-                                </p>
-                                <hr />
-                                <p class="intro">
-                                    Pellentesque habitant morbi tristique
-                                    senectus et netus et malesuada fames ac
-                                    turpis egestas. Vestibulum tortor quam,
-                                    feugiat vitae, ultricies eget, tempor sit
-                                    amet, ante. Donec eu libero sit amet quam
-                                    egestas semper. Aenean ultricies mi vitae
-                                    est. Mauris placerat eleifend leo.
-                                </p>
-                                <p class="read-more">
-                                    <a href="post.html" class="btn btn-primary"
-                                        >Continue reading</a
-                                    >
-                                </p>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="post">
-                                <h4>
-                                    <a href="post.html"
-                                        >Who is who - example blog post</a
-                                    >
-                                </h4>
-                                <p class="author-category">
-                                    By <a href="#">John Slim</a> in
-                                    <a href="">About Minimal</a>
-                                </p>
-                                <hr />
-                                <p class="intro">
-                                    Pellentesque habitant morbi tristique
-                                    senectus et netus et malesuada fames ac
-                                    turpis egestas. Vestibulum tortor quam,
-                                    feugiat vitae, ultricies eget, tempor sit
-                                    amet, ante. Donec eu libero sit amet quam
-                                    egestas semper. Aenean ultricies mi vitae
-                                    est. Mauris placerat eleifend leo.
-                                </p>
-                                <p class="read-more">
-                                    <a href="post.html" class="btn btn-primary"
-                                        >Continue reading</a
-                                    >
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /#blog-homepage-->
-                </div>
-            </div>
-            <!-- /.container-->
-            <!-- *** BLOG HOMEPAGE END ***-->
         </div>
     </div>
 </template>
@@ -290,14 +224,111 @@ export default {
             theloai: [],
             ngonngu: [],
             nhaxuatban: [],
+            slide: 0,
+            sliding: null,
+            paginate: 8,
+            carts: [],
+            cartadd: {
+                ma: "",
+                title: "",
+                price: "",
+                image: "",
+                quatity: 1,
+            },
+            badge: 0,
+            totalPrice: 0,
+            detailbook: [],
         };
+    },
+    props: {
+        getCartCount: Function,
     },
     mounted() {
         this.loadBanner();
         this.loadBook();
     },
     methods: {
-        showImage(fileName, id) {
+        viewCart: function () {
+            if (localStorage.getItem("cart")) {
+                this.carts = JSON.parse(localStorage.getItem("cart"));
+                this.badge = this.carts.length;
+                this.totalPrice = this.carts.reduce((total, item) => {
+                    return total + this.quatity + item.price;
+                }, 0);
+                console.log(this.carts);
+            }
+        },
+        storeCart: function () {
+            let parsed = JSON.stringify(this.carts);
+            localStorage.setItem("cart", parsed);
+            this.viewCart();
+        },
+        addToCart: function (ma) {
+            // localStorage.removeItem("cart")
+            if (localStorage.getItem("cart") != null) {
+                this.carts = JSON.parse(localStorage.getItem("cart"));
+                this.carts.forEach((value, index) => {
+                    if (value.ma == ma) {
+                        this.check = false;
+                    }
+                });
+                if (this.check == true) {
+                    axios
+                        .get("/api/user/detail/" + ma)
+                        .then((response) => {
+                            this.detailbook = response.data;
+                            this.cartadd.ma = this.detailbook.ma;
+                            this.cartadd.image = this.detailbook.images;
+                            this.cartadd.title = this.detailbook.title;
+                            this.cartadd.price = this.detailbook.price;
+                            this.cartadd.quatity = 1;
+                            this.carts.push(this.cartadd);
+                            this.cartadd = {};
+                            let parsed = JSON.stringify(this.carts);
+                            localStorage.setItem("cart", parsed);
+                            this.getCartCount(
+                                JSON.parse(localStorage.getItem("cart")).length
+                            );
+                            swal("Thêm vào giở thành công!", "", "success");
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+                if (this.check == false) {
+                    swal("Lỗi!", "Sản phẩm đã có trong giỏ hàng!");
+                    this.check = true;
+                }
+
+                console.log(this.carts);
+            } else {
+                axios
+                    .get("/api/user/detail/" + ma)
+                    .then((response) => {
+                        this.detailbook = response.data;
+                        this.cartadd.ma = this.detailbook.ma;
+                        this.cartadd.image = this.detailbook.images;
+                        this.cartadd.title = this.detailbook.title;
+                        this.cartadd.price = this.detailbook.price;
+                        this.carts.push(this.cartadd);
+                        this.cartadd = {};
+                        let parsed = JSON.stringify(this.carts);
+                        localStorage.setItem("cart", parsed);
+                        this.getCartCount(
+                            JSON.parse(localStorage.getItem("cart")).length
+                        );
+                        swal("Thêm vào giở thành công!", "", "success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        },
+        formatPrice(value) {
+            let val = (value / 1).toFixed(0).replace(",", ".");
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        showImage: function (fileName, id) {
             const storage = getStorage();
             getDownloadURL(ref(storage, fileName))
                 .then((url) => {
@@ -319,7 +350,7 @@ export default {
                     // Handle any errors
                 });
         },
-        loadBanner() {
+        loadBanner: function () {
             var dem = 0;
             const storage = getStorage();
             // Create a reference under which you want to list
@@ -334,7 +365,6 @@ export default {
                     });
                     res.items.forEach((itemRef) => {
                         // All the items under listRef.
-                        console.log(itemRef.name);
                         getDownloadURL(ref(storage, "banner/" + itemRef.name))
                             .then((url) => {
                                 // `url` is the download URL for 'images/stars.jpg'
@@ -354,7 +384,6 @@ export default {
                                 );
                                 img.setAttribute("src", url);
                                 dem = dem + 1;
-                                console(dem);
                             })
                             .catch((error) => {
                                 // Handle any errors
@@ -364,6 +393,15 @@ export default {
                 .catch((error) => {
                     // Uh-oh, an error occurred!
                 });
+        },
+        onSlideStart(slide) {
+            this.sliding = true;
+        },
+        onSlideEnd(slide) {
+            this.sliding = false;
+        },
+        loadpage: function () {
+            this.$router.go();
         },
         loadBook: function () {
             axios
@@ -402,7 +440,6 @@ export default {
                 .get("/api/admin/all_book")
                 .then((response) => {
                     this.books = response;
-                    console.log(this.books);
                 })
                 .catch(function (error) {
                     console.log(error);

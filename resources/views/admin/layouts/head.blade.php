@@ -27,8 +27,10 @@
   <!-- Notyf -->
   <link type="text/css" href="{{ asset('vendor/choices/choices.min.css') }}" rel="stylesheet">
 
+
   <!-- Volt CSS -->
   <link type="text/css" href="{{ asset('css/volt.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 
   @stack('styles')
 

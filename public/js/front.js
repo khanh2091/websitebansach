@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
 
     $('.shop-detail-carousel').owlCarousel({
         items: 1,
@@ -70,7 +70,7 @@ $(function () {
         alternateColour.attr("href", $.cookie("theme_csspath"));
     }
 
-    $("#colour").change(function () {
+    $("#colour").change(function() {
 
         if ($(this).val() !== '') {
 
@@ -92,12 +92,12 @@ $(function () {
 
 
 
-$(window).on('load', function () {
+$(window).on('load', function() {
     $(this).alignElementsSameHeight();
 });
 
-$(window).resize(function () {
-    setTimeout(function () {
+$(window).resize(function() {
+    setTimeout(function() {
         $(this).alignElementsSameHeight();
     }, 150);
 });
@@ -144,26 +144,26 @@ function utils() {
 
     /* click on the box activates the radio */
 
-    $('#checkout').on('click', '.box.shipping-method, .box.payment-method', function (e) {
+    $('#checkout').on('click', '.box.shipping-method, .box.payment-method', function(e) {
         var radio = $(this).find(':radio');
         radio.prop('checked', true);
     });
     /* click on the box activates the link in it */
 
-    $('.box.clickable').on('click', function (e) {
+    $('.box.clickable').on('click', function(e) {
 
         window.location = $(this).find('a').attr('href');
     });
     /* external links in new window*/
 
-    $('.external').on('click', function (e) {
+    $('.external').on('click', function(e) {
 
         e.preventDefault();
         window.open($(this).attr("href"));
     });
     /* animated scrolling */
 
-    $('.scroll-to, .scroll-to-top').click(function (event) {
+    $('.scroll-to, .scroll-to-top').click(function(event) {
 
         var full_url = this.href;
         var parts = full_url.split("#");
@@ -190,8 +190,8 @@ function utils() {
 }
 
 
-$.fn.alignElementsSameHeight = function () {
-    $('.same-height-row').each(function () {
+$.fn.alignElementsSameHeight = function() {
+    $('.same-height-row').each(function() {
 
         var maxHeight = 0;
 
@@ -200,7 +200,7 @@ $.fn.alignElementsSameHeight = function () {
         children.height('auto');
 
         if ($(document).width() > 768) {
-            children.each(function () {
+            children.each(function() {
                 if ($(this).innerHeight() > maxHeight) {
                     maxHeight = $(this).innerHeight();
                 }
@@ -214,7 +214,7 @@ $.fn.alignElementsSameHeight = function () {
 
         children.height('auto');
 
-        children.each(function () {
+        children.each(function() {
             if ($(this).innerHeight() > maxHeight) {
                 maxHeight = $(this).innerHeight();
             }

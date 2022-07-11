@@ -6,7 +6,7 @@
             <nav-admin></nav-admin>
             <main-app></main-app>
             
-                <account-admin></account-admin>
+            <account-admin></account-admin>
         </div>  
         <script src="{{ asset('js/app.js') }}"></script>
         @include('admin.layouts.scripts')

@@ -1,0 +1,23 @@
+.button1:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.button {
+    position: relative;
+    height: 40px;
+    background-color: #ffffff;
+    color: #348e7b;
+    border: none;
+    border-radius: 10px;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.model1 {
+    width: 1140px;
+}
+
+.inDam {
+    font-weight: bold;
+}

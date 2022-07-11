@@ -29,7 +29,7 @@ class UserController extends Controller
             if($validator->fails()){
                 return response()->json($validator->errors()->toJson(), 400);
             }
-
+            $role = request('role','customer');
             $user = ModelsUser::create([
                 'firstname' => $request->get('firstname'),
                 'lastname' => $request->get('lastname'),
@@ -37,13 +37,14 @@ class UserController extends Controller
                 'birthday' => $request->get('birthday'),
                 'gender' => $request->get('gender'),
                 'telephone' => $request->get('telephone'),
+                'role' => $role,
                 'password' => Hash::make($request->get('password')),
+                'address' => $request->get('address'),
             ]);
 
             $token = JWTAuth::fromUser($user);
 
             return response()->json(compact('user','token'), 201);
-
     }
 
     public function login(Request $request){
@@ -67,7 +68,7 @@ class UserController extends Controller
                 return response()->json(['user_not_found'], 400);
             }
         }catch (TokenExpiredException $e){
-            return response()->json(['token_expired'], $e->getStatusCode());
+            return "Đăng nhập quá hạn"; 
         }catch (TokenInvalidException $e){
             return response()->json(['token_invalid'], $e->getStatusCode());
         }catch (JWTException $e){

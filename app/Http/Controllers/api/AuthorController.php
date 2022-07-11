@@ -23,18 +23,19 @@ class AuthorController extends Controller
     {
         //
         $Paginate = request('paginate',10);
-        $Search_term = request('q', '');
+        $Search_term = request('q', '%%');
         $author = Author::orderBy('ma')->where('ma', 'like' , $Search_term)
         ->orWhere('firstname', 'like', $Search_term)
         ->orWhere('lastname', 'like', $Search_term)
         ->orWhere('biography', 'like', $Search_term)
         ->paginate($Paginate);
-        // if (isset($paginate)) {
-        //     $author = Author::orderBy('ma')->paginate(3);
-        // } else {
-        //     $author = Author::orderBy('ma')->get();
-        // }
+        // // if (isset($paginate)) {
+        // //     $author = Author::orderBy('ma')->paginate(3);
+        // // } else {
+        // //     $author = Author::orderBy('ma')->get();
+        // // }
         return AuthorResoure::collection($author);
+       
     }
 
     /**

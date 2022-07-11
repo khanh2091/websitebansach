@@ -1,5 +1,6 @@
 <!-- Core -->
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('vendor/@popperjs/core/dist/umd/popper.min.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
@@ -50,4 +51,5 @@
 <!-- Custom JS -->
 <script src="{{ asset('js/custom.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('js/front.js')}}"></script>
 @stack('scripts')
