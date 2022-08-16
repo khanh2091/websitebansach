@@ -90,11 +90,15 @@
                                         placeholder="Mã tác giả"
                                         value=""
                                         pattern="[N][V][0-9]{3}"
-                                        required
+                                        :class="{
+                                            'is-invalid': errors.ma != null,
+                                        }"
                                     />
-                                    <div class="invalid-feedback">
-                                        Đang trống hoặc mã không đúng (ví dụ:
-                                        NV001)
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.ma != null"
+                                    >
+                                        {{ errors.ma }}
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -110,11 +114,17 @@
                                         name="firstname"
                                         v-model="firstname"
                                         placeholder="Họ tác giả"
-                                        value=""
+                                        :class="{
+                                            'is-invalid':
+                                                errors.firstname != null,
+                                        }"
                                         required
                                     />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.firstname != null"
+                                    >
+                                        {{ errors.firstname }}
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -124,6 +134,9 @@
                                         >Tên tác giả:
                                     </label>
                                     <input
+                                        :class="{
+                                            'is-invalid': errors.ma != null,
+                                        }"
                                         class="form-control"
                                         type="text"
                                         id="lastname"
@@ -133,8 +146,11 @@
                                         value=""
                                         required
                                     />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.lastname != null"
+                                    >
+                                        {{ errors.lastname }}
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -181,32 +197,43 @@
 </template>
 <script>
 import axios from "axios";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 export default {
     data() {
         return {
-            ma: '',
-            firstname: '',
-            lastname: '',
-            biography: '',
+            ma: "",
+            firstname: "",
+            lastname: "",
+            biography: "",
+            errors: [],
         };
     },
     methods: {
         formSubmit() {
-
-            axios
-                .post(`api/addauthor`, {
-                    ma: this.ma, 
-                    firstname: this.firstname, 
-                    lastname: this.lastname, 
-                    biography: this.biography})
-                .then( (response)  => {
-                    swal("Thêm thành công!", "", "success");
-
-                })
-                .catch(function (error) {
-                    onsole.log(error);
-                });
+            this.errors = [];
+            if (this.ma == "") {
+                this.errors.ma = "Chưa nhập mã tác giả";
+            }
+            if (this.firstname == "") {
+                this.errors.firstname = "Chưa nhập họ tác giả";
+            }
+            if (this.lastname == "") {
+                this.errors.lastname = " Chưa nhập tên tác giả";
+            } else {
+                axios
+                    .post(`api/addauthor`, {
+                        ma: this.ma,
+                        firstname: this.firstname,
+                        lastname: this.lastname,
+                        biography: this.biography,
+                    })
+                    .then((response) => {
+                        swal("Thêm thành công!", "", "success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         },
     },
 };

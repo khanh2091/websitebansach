@@ -91,6 +91,7 @@
                                                 }"
                                                 class="form-control"
                                                 v-model="email"
+                                                readonly
                                             />
                                             <div
                                                 class="invalid-feedback"
@@ -143,7 +144,7 @@
                                                 </option>
                                                 <option
                                                     v-for="tamp in province"
-                                                    v-bind:value="tamp.id"
+                                                    v-bind:value="tamp._name"
                                                 >
                                                     {{ tamp._name }}
                                                 </option>
@@ -176,7 +177,7 @@
                                                 </option>
                                                 <option
                                                     v-for="tamp in state"
-                                                    v-bind:value="tamp.id"
+                                                    v-bind:value="tamp._name"
                                                 >
                                                     {{ tamp._name }}
                                                 </option>
@@ -405,7 +406,7 @@
                                                 </th>
                                             </tr>
                                             <tr class="total">
-                                                <td colspan="1">Total:</td>
+                                                <td colspan="1">Tông cộng:</td>
                                                 <th>{{ allcost() }}</th>
                                             </tr>
                                         </tbody>
@@ -459,6 +460,7 @@ export default {
             email: null,
             province_id: null,
             state_id: null,
+            check: "",
         };
     },
     watch: {
@@ -476,6 +478,7 @@ export default {
         this.loadCart();
         this.loadAddress();
         this.getUser();
+        this.loadState();
     },
     methods: {
         loadState: function () {
@@ -483,6 +486,26 @@ export default {
                 .get("/api/user/getstate?id=" + this.province_id)
                 .then((response) => {
                     this.state = response.data;
+                    console.log(this.state);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        loadAddress: function () {
+            axios
+                .get("/api/user/getprovince")
+                .then((response) => {
+                    this.province = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/user/getstate")
+                .then((response) => {
+                    this.state = response.data;
+                    console.log(this.state);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -490,7 +513,6 @@ export default {
         },
         checkForm: function (e) {
             this.errors = [];
-
             if (!this.firstname) {
                 this.errors.firstname = "Họ đang trống";
             }
@@ -522,7 +544,13 @@ export default {
                 this.email != null
             ) {
                 var tamp = Math.floor(Math.random() * 1000000000);
-                console.log(this.dataUser.user.id);
+                console.log(
+                    this.address +
+                        ", " +
+                        this.state_id +
+                        ", " +
+                        this.province_id
+                );
                 axios
                     .post(`/api/user/order`, {
                         order_number: tamp.toString(),
@@ -532,7 +560,12 @@ export default {
                         total: this.total,
                         user_id: this.dataUser.user.id,
                         page_number: this.page_number,
-                        address: this.address,
+                        address:
+                            this.address +
+                            ", " +
+                            this.state_id +
+                            ", " +
+                            this.province_id,
                         telephone: this.telephone,
                         discount: 0,
                         status: "new",
@@ -548,19 +581,35 @@ export default {
                                     discount: 0,
                                     quantity: value.quatity,
                                 })
-                                .then((response) => {})
+                                .then((response) => {
+                                    this.checkSoLuong(response.data);
+                                })
                                 .catch(function (error) {
                                     console.log(error);
                                 });
                         });
-                        localStorage.removeItem("cart");
-                        swal("Thêm thành công!", "", "success");
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             }
+            
             e.preventDefault();
+        },
+        callAlert: function () {
+            if (this.check == "Số lượng không đủ") {
+                swal("Lỗi!", "Sản phẩm không đủ để đặt hàng!");
+            }
+            if (this.check == "") {
+                // localStorage.removeItem("cart");
+                swal("Đặt hàng thành công!", "", "success");
+            }
+        },
+        checkSoLuong: function (value) {
+            if (value == "Số lượng không đủ") {
+                this.check = "Số lượng không đủ";
+            }
+            this.callAlert();
         },
         getUser: function () {
             axios
@@ -571,6 +620,7 @@ export default {
                 })
                 .then((response) => {
                     this.dataUser = response.data;
+                    this.email = this.dataUser.user["email"];
                     console.log(this.dataUser);
                 })
                 .catch(function (error) {

@@ -105,3 +105,13 @@ Route::get('admin/all_categoryHead', [App\Http\Controllers\api\CategoriesControl
 Route::get('admin/all_languageHead', [App\Http\Controllers\api\LanguagesController::class, 'getAll'])->name('get-language');
 Route::get('admin/all_authorHead', [App\Http\Controllers\api\AuthorController::class, 'getAll'])->name('get-author');
 Route::get('admin/all_publisherHead', [App\Http\Controllers\api\PublishersController::class, 'getAll'])->name('get-nxb');
+
+//Count 
+Route::get('admin/count_category', [App\Http\Controllers\api\CountController::class, 'getCountCategory'])->name('get-category');
+Route::get('admin/count_author', [App\Http\Controllers\api\CountController::class, 'getCountAuthor'])->name('get-author');
+Route::get('admin/count_publisher', [App\Http\Controllers\api\CountController::class, 'getCountPublisher'])->name('get-nxb');
+Route::get('admin/count_accountemploy', [App\Http\Controllers\api\CountController::class, 'getCountAccountEmploy'])->name('get-nxb');
+Route::get('admin/count_accountcustomer', [App\Http\Controllers\api\CountController::class, 'getCountAccountCustomer'])->name('get-nxb');
+Route::get('admin/count_book', [App\Http\Controllers\api\CountController::class, 'getCountBook'])->name('get-nxb');
+Route::get('admin/count_order', [App\Http\Controllers\api\CountController::class, 'getCountOrder'])->name('get-nxb');
+

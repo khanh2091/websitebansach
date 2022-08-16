@@ -157,7 +157,7 @@
                             <div
                                 class="box-footer d-flex justify-content-between flex-column flex-lg-row"
                             >
-                                <div class="left">
+                                <div class="left" @click="loadpage">
                                     <router-link
                                         :class="[
                                             {
@@ -172,20 +172,20 @@
                                     >
                                 </div>
                                 <div class="right">
-                                    <button
-                                        @click="refreshCart()"
+                                    <span
+                                        @click="loadpage"
                                         class="btn btn-outline-secondary"
                                     >
                                         <i class="fa fa-refresh"></i> Cập nhật
                                         giỏ hàng
-                                    </button>
-                                    <button
+                                    </span>
+                                    <span
                                         @click="checkout"
                                         class="btn btn-primary"
                                     >
                                         Thanh toán
                                         <i class="fa fa-chevron-right"></i>
-                                    </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -333,6 +333,7 @@
 import $ from "jquery";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import axios from "axios";
+import swal from "sweetalert";
 export default {
     data() {
         return {
@@ -345,6 +346,7 @@ export default {
             total: 0,
             tax: 0.05,
             advisebook: [],
+            dataUser: "",
         };
     },
     watch: {
@@ -361,9 +363,11 @@ export default {
     },
     methods: {
         checkout: function () {
-            if (localStorage.getItem("usertoken")) {
+            if (this.dataUser != "Đăng nhập quá hạn") {
                 this.$router.push({ name: "checkout" });
-            } else {
+                this.loadpage();
+            }
+            if (this.dataUser == "Đăng nhập quá hạn") {
                 swal({
                     title: "Chưa đăng nhập?",
                     text: "Hãy đăng nhập để đặt hàng!",
@@ -373,6 +377,7 @@ export default {
                 }).then((willDelete) => {
                     if (willDelete) {
                         this.$router.push({ name: "register" });
+                        this.loadpage();
                     }
                 });
             }
@@ -382,7 +387,19 @@ export default {
                 .get("/api/user/getnewbook")
                 .then((response) => {
                     this.advisebook = response.data;
-                    console.log(this.advisebook);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            axios
+                .get("/api/profile", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.usertoken}`,
+                    },
+                })
+                .then((response) => {
+                    this.dataUser = response.data;
+                    console.log(this.dataUser);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -462,6 +479,9 @@ export default {
                 .catch((error) => {
                     // Handle any errors
                 });
+        },
+        loadpage: function () {
+            this.$router.go();
         },
         showImage: function (fileName, id) {
             const storage = getStorage();

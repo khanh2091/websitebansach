@@ -205,7 +205,7 @@
             <b-modal
                 id="modal-prevent-closing"
                 ref="modal"
-                title="Chỉnh sửa tác giả"
+                title="Chỉnh sửa ngôn ngữ"
                 @show="resetModal"
                 @hidden="resetModal"
                 @ok="handleOk"

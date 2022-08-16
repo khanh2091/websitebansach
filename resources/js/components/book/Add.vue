@@ -612,6 +612,9 @@ export default {
             if (this.imageData == null) {
                 this.errors.imageData = "Chưa chọn hình";
             }
+            if( this.quantity <= 0){
+                this.errors.quantity = "Không được phép nhập số âm";
+            }
             if (
                 moment(String(this.publication_date)).format("MMM Do YY") <=
                 moment(String(this.reprint_date)).format("MMM Do YY")

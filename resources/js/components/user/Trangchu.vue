@@ -48,11 +48,13 @@
                                                     $route.name === 'profile',
                                             },
                                         ]"
-                                        :to="{ name: 'profile' }">{{
-                                        dataUser.data.user.firstname +
-                                        " " +
-                                        dataUser.data.user.lastname
-                                    }}</router-link>
+                                        :to="{ name: 'profile' }"
+                                        >{{
+                                            dataUser.data.user.firstname +
+                                            " " +
+                                            dataUser.data.user.lastname
+                                        }}</router-link
+                                    >
                                 </li>
                                 <li
                                     v-if="dataUser.length != 0"
@@ -147,26 +149,28 @@
                 <!-- *** TOP BAR END ***-->
             </div>
             <nav class="navbar navbar-expand-lg">
-                <div class="container" @click="loadpage">
-                    <router-link
-                        :class="[
-                            {
-                                active: $route.name == 'trangchu',
-                            },
-                        ]"
-                        :to="{ name: 'trangchu' }"
-                        ><img
-                            src="/img/logo.png"
-                            alt="Obaju logo"
-                            class="d-none d-md-inline-block"
-                        /><img
-                            src="/img/logo-small.png"
-                            alt="Obaju logo"
-                            class="d-inline-block d-md-none"
-                        /><span class="sr-only"
-                            >Obaju - go to homepage</span
-                        ></router-link
-                    >
+                <div class="container">
+                    <span @click="loadpage">
+                        <router-link
+                            :class="[
+                                {
+                                    active: $route.name == 'trangchu',
+                                },
+                            ]"
+                            :to="{ name: 'trangchu' }"
+                            ><img
+                                src="/img/logo.png"
+                                alt="Obaju logo"
+                                class="d-none d-md-inline-block"
+                            /><img
+                                src="/img/logo-small.png"
+                                alt="Obaju logo"
+                                class="d-inline-block d-md-none"
+                            /><span class="sr-only"
+                                >Obaju - go to homepage</span
+                            ></router-link
+                        >
+                    </span>
                     <div class="navbar-buttons">
                         <button
                             type="button"
@@ -194,8 +198,8 @@
                     <!-- menu -->
                     <div id="navigation" class="collapse navbar-collapse">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item"  @click="loadpage"> 
-                                <router-link 
+                            <li class="nav-item" @click="loadpage">
+                                <router-link
                                     :class="[
                                         {
                                             active: $route.name == 'trangchu',
@@ -236,9 +240,7 @@
                                                     class="list-unstyled mb-3"
                                                     v-for="tamp in tacgia"
                                                 >
-                                                    <li
-                                                        class="nav-item"
-                                                    >
+                                                    <li class="nav-item">
                                                         <router-link
                                                             :to="{
                                                                 name: 'sortbook',
@@ -335,19 +337,9 @@
                         <div class="navbar-buttons d-flex justify-content-end">
                             <!-- /.nav-collapse-->
                             <div
-                                id="search-not-mobile"
-                                class="navbar-collapse collapse"
-                            ></div>
-                            <a
-                                data-toggle="collapse"
-                                href="#search"
-                                class="btn navbar-btn btn-primary d-none d-lg-inline-block"
-                                ><span class="sr-only">Toggle search</span
-                                ><i class="fa fa-search"></i
-                            ></a>
-                            <div
                                 id="basket-overview"
                                 class="navbar-collapse collapse d-none d-lg-block"
+                                @click="loadpage"
                             >
                                 <router-link
                                     :class="[
@@ -356,11 +348,23 @@
                                     :to="{ name: 'cart' }"
                                     class="btn btn-primary navbar-btn"
                                     ><i class="fa fa-shopping-cart"></i
-                                    ><span
-                                        >Giỏ hàng</span
-                                    ></router-link
+                                    ><span>Giỏ hàng</span></router-link
                                 >
                             </div>
+                        </div>
+                        <div class="navbar-buttons d-flex justify-content-end">
+                            <!-- /.nav-collapse-->
+                            <div
+                                id="search-not-mobile"
+                                class="navbar-collapse collapse"
+                            ></div>
+                            <span
+                                data-toggle="collapse"
+                                href="#search"
+                                class="btn navbar-btn btn-primary d-none d-lg-inline-block"
+                                ><span class="sr-only">Toggle search</span
+                                ><i class="fa fa-search"></i
+                            ></span>
                         </div>
                     </div>
                 </div>
@@ -380,13 +384,13 @@
                                 class="form-control"
                             />
                             <div class="input-group-append">
-                                <button
+                                <span
                                     @click="searchSubmit"
                                     type="button"
                                     class="btn btn-primary"
                                 >
                                     <i class="fa fa-search"></i>
-                                </button>
+                                </span>
                             </div>
                         </div>
                     </form>
@@ -402,16 +406,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="mb-3">Pages</h4>
-                        <ul class="list-unstyled">
-                            <li><a href="text.html">About us</a></li>
-                            <li>
-                                <a href="text.html">Terms and conditions</a>
-                            </li>
-                            <li><a href="faq.html">FAQ</a></li>
-                            <li><a href="contact.html">Contact us</a></li>
-                        </ul>
-                        <hr />
                         <h4 class="mb-3">User section</h4>
                         <ul class="list-unstyled">
                             <li>
@@ -419,72 +413,57 @@
                                     href="#"
                                     data-toggle="modal"
                                     data-target="#login-modal"
-                                    >Login</a
+                                    >Đăng nhập</a
                                 >
                             </li>
-                            <li>
+                            <li @click="loadpage">
                                 <router-link
                                     :class="[
                                         { active: $route.name === 'register' },
                                     ]"
                                     :to="{ name: 'register' }"
-                                    >Regiter</router-link
+                                    >Đăng nhập</router-link
                                 >
                             </li>
                         </ul>
                     </div>
                     <!-- /.col-lg-3-->
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="mb-3">Top categories</h4>
-                        <h5>Men</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="category.html">T-shirts</a></li>
-                            <li><a href="category.html">Shirts</a></li>
-                            <li><a href="category.html">Accessories</a></li>
-                        </ul>
-                        <h5>Ladies</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="category.html">T-shirts</a></li>
-                            <li><a href="category.html">Skirts</a></li>
-                            <li><a href="category.html">Pants</a></li>
-                            <li><a href="category.html">Accessories</a></li>
+                        <h4 class="mb-3">Thể loại</h4>
+                        <ul class="list-unstyled mb-3" v-for="tamp in theloai">
+                            <li class="nav-item" @click="loadpage">
+                                <router-link
+                                    :to="{
+                                        name: 'sortbook',
+                                        params: {
+                                            id: tamp.ma,
+                                        },
+                                    }"
+                                    >{{ tamp.title }}</router-link
+                                >
+                            </li>
                         </ul>
                     </div>
                     <!-- /.col-lg-3-->
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="mb-3">Where to find us</h4>
+                        <h4 class="mb-3">Địa chỉ</h4>
                         <p>
-                            <strong>Obaju Ltd.</strong><br />13/25 New Avenue<br />New
-                            Heaven<br />45Y 73J<br />England<br /><strong
-                                >Great Britain</strong
+                            <strong>Obaju Ltd.</strong><br />180 Cao Lỗ<br />Phường
+                            4<br />Quận 8<br />Hồ Chí Minh<br /><strong
+                                >Việt Nam</strong
                             >
                         </p>
-                        <a href="contact.html">Go to contact page</a>
                         <hr class="d-block d-md-none" />
                     </div>
                     <!-- /.col-lg-3-->
                     <div class="col-lg-3 col-md-6">
-                        <h4 class="mb-3">Get the news</h4>
+                        <h4 class="mb-3"></h4>
                         <p class="text-muted">
-                            Pellentesque habitant morbi tristique senectus et
-                            netus et malesuada fames ac turpis egestas.
+
                         </p>
                         <form>
-                            <div class="input-group">
-                                <input type="text" class="form-control" /><span
-                                    class="input-group-append"
-                                >
-                                    <button
-                                        type="button"
-                                        class="btn btn-outline-secondary"
-                                    >
-                                        Subscribe!
-                                    </button></span
-                                >
-                            </div>
-                            <!-- /input-group-->
+                            
                         </form>
-                        <hr />
                         <h4 class="mb-3">Stay in touch</h4>
                         <p class="social">
                             <a href="#" class="facebook external"
@@ -524,8 +503,8 @@
                     <div class="col-lg-6">
                         <p class="text-center text-lg-right">
                             Template design by
-                            <a href="https://bootstrapious.com/"
-                                >Bootstrapious</a
+                            <a href="https://www.facebook.com/profile.php?id=100009937963753"
+                                >Nguyễn Quốc Khánh</a
                             >
                             <!-- If you want to remove this backlink, pls purchase an Attribution-free License @ https://bootstrapious.com/p/obaju-e-commerce-template. Big thanks!-->
                         </p>
@@ -555,11 +534,7 @@ export default {
             carts: 0,
         };
     },
-    watch: {
-        search(q) {
-            this.searchSubmit(q);
-        },
-    },
+    watch: {},
     mounted() {
         this.loadEventBus();
         this.loadBook();
@@ -585,10 +560,9 @@ export default {
             this.$router.go();
         },
         searchSubmit: function (q) {
-            // alert('hello');
-            EventBus.$emit("search", this.search);
             const timkiem = this.search;
-            this.$router.push({ name: "search", query: { timkiem } });
+            this.$router.push({ name: "search", params: { id: this.search } });
+            this.loadpage();
         },
         tamp: function () {
             console.log(localStorage.usertoken);

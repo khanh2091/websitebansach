@@ -41,8 +41,9 @@
                                     <div
                                         class="col-md-12 col-lg-4 products-showing"
                                     >
-                                        Showing <strong>12</strong> of
-                                        <strong>25</strong> products
+                                        Hiển thị
+                                        <strong>{{ paginate }}</strong> trong
+                                        <strong>25</strong> sách
                                     </div>
                                     <div
                                         class="col-md-12 col-lg-7 products-number-sort"
@@ -51,20 +52,48 @@
                                             class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row"
                                         >
                                             <div class="products-number">
-                                                <strong>Show</strong
-                                                ><a
-                                                    href="#"
-                                                    class="btn btn-sm btn-primary"
-                                                    >12</a
-                                                ><a
-                                                    href="#"
-                                                    class="btn btn-outline-secondary btn-sm"
-                                                    >24</a
-                                                ><a
-                                                    href="#"
-                                                    class="btn btn-outline-secondary btn-sm"
-                                                    >All</a
-                                                ><span>products</span>
+                                                <strong>Hiển thị</strong>
+                                                <span
+                                                    @click="changeVal(8)"
+                                                    class="btn btn-sm"
+                                                    :class="[
+                                                        {
+                                                            'btn-primary':
+                                                                paginate == 8,
+                                                            'btn-outline-secondary':
+                                                                paginate != 8,
+                                                        },
+                                                    ]"
+                                                >
+                                                    8
+                                                </span>
+                                                <span
+                                                    @click="changeVal(16)"
+                                                    class="btn btn-sm"
+                                                    :class="[
+                                                        {
+                                                            'btn-primary':
+                                                                paginate == 16,
+                                                            'btn-outline-secondary':
+                                                                paginate != 16,
+                                                        },
+                                                    ]"
+                                                >
+                                                    16</span
+                                                ><span
+                                                    @click="changeVal(32)"
+                                                    class="btn btn-sm"
+                                                    :class="[
+                                                        {
+                                                            'btn-primary':
+                                                                paginate == 32,
+                                                            'btn-outline-secondary':
+                                                                paginate != 32,
+                                                        },
+                                                    ]"
+                                                >
+                                                    32</span
+                                                ><span>Sách</span>
                                             </div>
                                             <div
                                                 class="products-sort-by mt-2 mt-lg-0"
@@ -72,18 +101,38 @@
                                                 <strong>Sort by</strong>
                                                 <select
                                                     name="sort-by"
+                                                    v-model="filter"
                                                     class="form-control"
                                                 >
-                                                    <option>Price</option>
-                                                    <option>Name</option>
-                                                    <option>Sales first</option>
+                                                    <option value="price">
+                                                        Giá
+                                                    </option>
+                                                    <option value="title">
+                                                        Tên sách
+                                                    </option>
+                                                    <option value="sold">
+                                                        Bán chạy nhất
+                                                    </option>
                                                 </select>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row products">
+                            <div
+                                class="row products"
+                                v-if="books.data.length == 0"
+                            >
+                                <div style="padding-left: 50px;">
+                                    <h1 style="text-align: center">
+                                        Không tìm thấy sách bạn đang tìm kiếm
+                                    </h1>
+                                </div>
+                            </div>
+                            <div
+                                class="row products"
+                                v-if="books.data.length != 0"
+                            >
                                 <div
                                     class="col-lg-3 col-md-4"
                                     v-for="sach in books.data"
@@ -92,128 +141,98 @@
                                         <div class="flip-container">
                                             <div class="flipper">
                                                 <div class="front">
-                                                    <a href="detail.html"
+                                                    <a href="#"
                                                         >{{
-                                                    showImage(
-                                                        sach.images,
-                                                        sach.ma
-                                                    )
-                                                }}<img
-                                                    :id="sach.ma"
-                                                    style="
-                                                        height: 337px;
-                                                        width: 253px;
-                                                    "
-                                                    class="img-fluid"
-                                            /></a>
+                                                            showImage(
+                                                                sach.images,
+                                                                sach.ma
+                                                            )
+                                                        }}<img
+                                                            :id="sach.ma"
+                                                            style="
+                                                                height: 337px;
+                                                                width: 253px;
+                                                            "
+                                                            class="img-fluid"
+                                                    /></a>
                                                 </div>
                                                 <div class="back">
                                                     <a href="detail.html"
                                                         >{{
-                                                    showImage(
-                                                        sach.images,
-                                                        sach.ma
-                                                    )
-                                                }}<img
-                                                    :id="sach.ma"
-                                                    style="
-                                                        height: 337px;
-                                                        width: 253px;
-                                                    "
-                                                    class="img-fluid"
-                                            /></a>
+                                                            showImage(
+                                                                sach.images,
+                                                                sach.ma
+                                                            )
+                                                        }}<img
+                                                            :id="sach.ma"
+                                                            style="
+                                                                height: 337px;
+                                                                width: 253px;
+                                                            "
+                                                            class="img-fluid"
+                                                    /></a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="detail.html" class="invisible"
+                                        <a href="#" class="invisible"
                                             ><img
-                                                src="img/product3.jpg"
+                                                src="/img/product3.jpg"
                                                 alt=""
                                                 class="img-fluid"
                                         /></a>
                                         <div class="text">
                                             <h3>
-                                                <a href="detail.html"
-                                                    >{{sach.title }}</a
-                                                >
+                                                <a href="detail.html">{{
+                                                    sach.title
+                                                }}</a>
                                             </h3>
                                             <p class="price">
-                                                <del></del>{{sach.price }} VNĐ
+                                                <del></del>{{ sach.price }} VNĐ
                                             </p>
                                             <p class="buttons">
-                                                <a
-                                                    href="detail.html"
-                                                    class="btn btn-outline-secondary"
-                                                    >View detail</a
-                                                ><a
-                                                    href="basket.html"
+                                                <span @click="loadpage">
+                                                    <router-link
+                                                        :to="{
+                                                            name: 'detailbook',
+                                                            params: {
+                                                                id: sach.ma,
+                                                            },
+                                                        }"
+                                                        class="btn btn btn-outline-secondary"
+                                                        >Xem chi
+                                                        tiết</router-link
+                                                    >
+                                                </span>
+                                                <span
+                                                    @click="addToCart(sach.ma)"
                                                     class="btn btn-primary"
-                                                    ><i
+                                                >
+                                                    <i
                                                         class="fa fa-shopping-cart"
                                                     ></i
-                                                    >Add to cart</a
-                                                >
+                                                    >Thêm vào giỏ
+                                                </span>
                                             </p>
                                         </div>
                                         <!-- /.text-->
                                     </div>
                                     <!-- /.product            -->
                                 </div>
+
                                 <!-- /.products-->
                             </div>
                             <div class="pages">
-                                <p class="loadMore">
-                                    <a href="#" class="btn btn-primary btn-lg"
-                                        ><i class="fa fa-chevron-down"></i> Load
-                                        more</a
+                                <div class="pages">
+                                    <nav
+                                        aria-label="Page navigation example"
+                                        class="d-flex justify-content-center"
                                     >
-                                </p>
-                                <nav
-                                    aria-label="Page navigation example"
-                                    class="d-flex justify-content-center"
-                                >
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a
-                                                href="#"
-                                                aria-label="Previous"
-                                                class="page-link"
-                                                ><span aria-hidden="true"
-                                                    >«</span
-                                                ><span class="sr-only"
-                                                    >Previous</span
-                                                ></a
-                                            >
-                                        </li>
-                                        <li class="page-item active">
-                                            <a href="#" class="page-link">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a href="#" class="page-link">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a href="#" class="page-link">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a href="#" class="page-link">4</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a href="#" class="page-link">5</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a
-                                                href="#"
-                                                aria-label="Next"
-                                                class="page-link"
-                                                ><span aria-hidden="true"
-                                                    >»</span
-                                                ><span class="sr-only"
-                                                    >Next</span
-                                                ></a
-                                            >
-                                        </li>
-                                    </ul>
-                                </nav>
+                                        <pagination
+                                            :data="books"
+                                            @pagination-change-page="loadBooks"
+                                        ></pagination>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
                         <!-- /.col-lg-9-->
@@ -226,11 +245,25 @@
 <script>
 import EventBus from "../EventBus.vue";
 import $ from "jquery";
+import axios from "axios";
+import swal from "sweetalert";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 export default {
     data() {
         return {
-            search: "",
+            carts: [],
+            cartadd: {
+                ma: "",
+                title: "",
+                price: "",
+                image: "",
+                quatity: 1,
+            },
+            quatity: 1,
+            badge: 0,
+            totalPrice: 0,
+            filter: "price",
+            search: this.$route.params.id,
             dataUser: [],
             listParent: [],
             laravelData: {},
@@ -241,11 +274,14 @@ export default {
             nhaxuatban: [],
             books: {},
             message: [],
-            paginate: 12,
+            paginate: 8,
         };
     },
     watch: {
         search: function (value) {
+            this.loadBooks();
+        },
+        filter: function (value) {
             this.loadBooks();
         },
     },
@@ -254,6 +290,78 @@ export default {
         this.loadBooks();
     },
     methods: {
+        changeVal: function (value) {
+            this.paginate = value;
+            this.loadBooks();
+        },
+        addToCart: function (ma) {
+            // localStorage.removeItem("cart")
+            if (localStorage.getItem("cart") != null) {
+                this.carts = JSON.parse(localStorage.getItem("cart"));
+                this.carts.forEach((value, index) => {
+                    if (value.ma == ma) {
+                        this.check = false;
+                    }
+                });
+                if (this.check == true) {
+                    axios
+                        .get("/api/user/detail/" + ma)
+                        .then((response) => {
+                            this.detailbook = response.data;
+                            this.cartadd.ma = this.detailbook.ma;
+                            this.cartadd.image = this.detailbook.images;
+                            this.cartadd.title = this.detailbook.title;
+                            this.cartadd.price = this.detailbook.price;
+                            this.cartadd.quatity = 1;
+                            this.carts.push(this.cartadd);
+                            this.cartadd = {};
+                            let parsed = JSON.stringify(this.carts);
+                            localStorage.setItem("cart", parsed);
+                            this.getCartCount(
+                                JSON.parse(localStorage.getItem("cart")).length
+                            );
+                            swal(
+                                "Good job!",
+                                "You clicked the button!",
+                                "success"
+                            );
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+                if (this.check == false) {
+                    swal("Lỗi!", "Sản phẩm đã có trong giỏ hàng!");
+                    this.check = true;
+                }
+
+                console.log(this.carts);
+            } else {
+                axios
+                    .get("/api/user/detail/" + ma)
+                    .then((response) => {
+                        this.detailbook = response.data;
+                        this.cartadd.ma = this.detailbook.ma;
+                        this.cartadd.image = this.detailbook.images;
+                        this.cartadd.title = this.detailbook.title;
+                        this.cartadd.price = this.detailbook.price;
+                        this.carts.push(this.cartadd);
+                        this.cartadd = {};
+                        let parsed = JSON.stringify(this.carts);
+                        localStorage.setItem("cart", parsed);
+                        this.getCartCount(
+                            JSON.parse(localStorage.getItem("cart")).length
+                        );
+                        swal("Thêm vào giở thành công!", "", "success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        },
+        loadpage: function () {
+            this.$router.go();
+        },
         showImage: function (fileName, id) {
             const storage = getStorage();
             getDownloadURL(ref(storage, fileName))
@@ -324,7 +432,9 @@ export default {
                         "&q=" +
                         "%" +
                         this.search +
-                        "%"
+                        "%" +
+                        "&order=" +
+                        this.filter
                 )
                 .then((response) => {
                     this.books = response.data;

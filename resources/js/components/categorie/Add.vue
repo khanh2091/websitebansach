@@ -74,130 +74,108 @@
                 <div class="col-12 mb-4 mx-auto">
                     <div class="card">
                         <div class="card-body">
-                            <form
-                                class="needs-validation"
-                                @submit.prevent="formSubmit"
-                                novalidate
-                            >
-                                <div class="form-group mb-4">
-                                    <label for="makh" class="col-form-label"
-                                        >Mã thể loại:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="ma"
-                                        name="ma"
-                                        v-model="ma"
-                                        placeholder="Mã thể loại"
-                                        value=""
-                                        pattern="[N][V][0-9]{3}"
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Đang trống hoặc mã không đúng (ví dụ:
-                                        NV001)
-                                    </div>
+                            <div class="form-group mb-4">
+                                <label for="makh" class="col-form-label"
+                                    >Mã thể loại:
+                                </label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    id="ma"
+                                    name="ma"
+                                    v-model="ma"
+                                    placeholder="Mã thể loại"
+                                    value=""
+                                    pattern="[N][V][0-9]{3}"
+                                    :class="{
+                                        'is-invalid': errors.ma != null,
+                                    }"
+                                />
+                                <div
+                                    class="invalid-feedback"
+                                    v-if="errors.ma != null"
+                                >
+                                    {{ errors.ma }}
                                 </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Tên thể loại:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="title"
-                                        name="title"
-                                        v-model="title"
-                                        placeholder="Tên thể loại"
-                                        value=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label
+                                    for="validationKhachHangNam"
+                                    class="col-form-label"
+                                    >Tên thể loại:
+                                </label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    v-model="title"
+                                    placeholder="Tên thể loại"
+                                    value=""
+                                    :class="{
+                                        'is-invalid': errors.title != null,
+                                    }"
+                                />
+                                <div
+                                    class="invalid-feedback"
+                                    v-if="errors.title != null"
+                                >
+                                    {{ errors.title }}
                                 </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Slug:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="slug"
-                                        name="slug"
-                                        v-model="slug"
-                                        placeholder="Viết tắc không dấu"
-                                        value=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Mô tả:
-                                    </label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        id="description"
-                                        name="description"
-                                        v-model="description"
-                                        placeholder="Mô tả"
-                                        value=""
-                                        required
-                                    />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label
-                                        for="validationKhachHangNam"
-                                        class="col-form-label"
-                                        >Thuộc thể loại (Có thể không chọn):
-                                    </label>
-                                    <select
-                                        class="form-select"
-                                        v-model="selected"
+                            </div>
+                            <div class="form-group mb-4"></div>
+                            <div class="form-group mb-4">
+                                <label
+                                    for="validationKhachHangNam"
+                                    class="col-form-label"
+                                    >Mô tả:
+                                </label>
+                                <input
+                                    class="form-control"
+                                    type="text"
+                                    id="description"
+                                    name="description"
+                                    v-model="description"
+                                    placeholder="Mô tả"
+                                    value=""
+                                />
+                            </div>
+                            <div class="form-group mb-4">
+                                <label
+                                    for="validationKhachHangNam"
+                                    class="col-form-label"
+                                    >Thuộc thể loại (Có thể không chọn):
+                                </label>
+                                <select
+                                    class="form-select"
+                                    v-model="selected"
+                                    :class="{
+                                        'is-invalid': errors.selected != null,
+                                    }"
+                                >
+                                    <option :value="null">Chọn thể loại</option>
+                                    <option
+                                        v-for="tamp in list"
+                                        v-bind:value="tamp.ma"
                                     >
-                                        <option :value="null">
-                                            Chọn thể loại
-                                        </option>
-                                        <option
-                                            v-for="tamp in list"
-                                            v-bind:value="tamp.ma"
-                                        >
-                                            {{ tamp.title }}
-                                        </option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
-                                    </div>
+                                        {{ tamp.title }}
+                                    </option>
+                                </select>
+                                <div
+                                    class="invalid-feedback"
+                                    v-if="errors.selected != null"
+                                >
+                                    {{ errors.selected }}
                                 </div>
-                                <div class="form-group my-3">
-                                    <button
-                                        class="btn btn-success text-white"
-                                        type="submit"
-                                    >
-                                        Thêm thể loại
-                                    </button>
-                                    <button
-                                        type="reset"
-                                        class="btn btn-warning text-white"
-                                    >
-                                        Xoá
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
+                            <div class="form-group my-3">
+                                <button
+                                    class="btn btn-success text-white"
+                                    @click="formSubmit"
+                                >
+                                    Thêm thể loại
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -217,6 +195,7 @@ export default {
             description: "",
             slug: "",
             selected: null,
+            errors: [],
         };
     },
     mounted() {
@@ -234,20 +213,28 @@ export default {
                 });
         },
         formSubmit() {
-            axios
-                .post(`/api/admin/addcategory`, {
-                    ma: this.ma,
-                    title: this.title,
-                    slug: this.slug,
-                    description: this.description,
-                    parent_id: this.selected,
-                })
-                .then((response) => {
-                    swal("Thêm thành công!", "", "success");
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            this.errors = [];
+            if (this.ma == "") {
+                this.errors.ma = "Chưa nhập mã thể loại";
+            }
+            if (this.title == "") {
+                this.errors.title = "Chưa nhập mã thể loại";
+            } else {
+                axios
+                    .post(`/api/admin/addcategory`, {
+                        ma: this.ma,
+                        title: this.title,
+                        slug: this.slug,
+                        description: this.description,
+                        parent_id: this.selected,
+                    })
+                    .then((response) => {
+                        swal("Thêm thành công!", "", "success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         },
     },
 };

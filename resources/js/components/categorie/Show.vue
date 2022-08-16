@@ -139,7 +139,6 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Tên thể loại</th>
-                                <th>Slug</th>
                                 <th>Mô tả</th>
                                 <th>Thuộc</th>
                                 <th>Ngày tạo</th>
@@ -158,7 +157,6 @@
                                 <td>
                                     {{ categorize.title }}
                                 </td>
-                                <td>{{ categorize.slug }}</td>
                                 <td>{{ categorize.description }}</td>
                                 <td v-if="categorize.parent_id == ''">
                                     Không có
@@ -224,7 +222,7 @@
             <b-modal
                 id="modal-prevent-closing"
                 ref="modal"
-                title="Chỉnh sửa tác giả"
+                title="Chỉnh sửa thể loại"
                 @show="resetModal"
                 @hidden="resetModal"
                 @ok="handleOk"
@@ -252,19 +250,6 @@
                         <b-form-input
                             id="title-input"
                             v-model="title"
-                            :state="nameState"
-                            required
-                        ></b-form-input>
-                    </b-form-group>
-                    <b-form-group
-                        label="Slug"
-                        label-for="slug-input"
-                        invalid-feedback="Slug is required"
-                        :state="nameState"
-                    >
-                        <b-form-input
-                            id="slug-input"
-                            v-model="slug"
                             :state="nameState"
                             required
                         ></b-form-input>
@@ -325,7 +310,6 @@ export default {
             submittedNames: [],
             code: "",
             title: "",
-            slug: "",
             description: "",
             parent_id: "",
             search: "",
@@ -385,7 +369,6 @@ export default {
         showEditCategorize: function (category) {
             this.ma = category;
             this.title = "";
-            this.slug = "";
             this.description = "";
             this.parent_id = "";
             axios
@@ -417,7 +400,6 @@ export default {
                             ma: this.ma,
                             title: this.title,
                             description: this.description,
-                            slug: this.slug,
                             parent_id: this.selected,
                         })
                         .then((response) => {

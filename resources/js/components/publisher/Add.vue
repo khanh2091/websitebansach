@@ -27,7 +27,9 @@
                     <li class="breadcrumb-item">
                         <router-link
                             class="nav-link"
-                            :class="[{ active: $route.name === 'addPublisher' }]"
+                            :class="[
+                                { active: $route.name === 'addPublisher' },
+                            ]"
                             :to="{ name: 'addPublisher' }"
                             >Thêm nhà xuất bản</router-link
                         >
@@ -87,14 +89,18 @@
                                         id="ma"
                                         name="ma"
                                         v-model="ma"
-                                        placeholder="Mã nhà xuất bản"
-                                        value=""
+                                        placeholder="Mã nngôn ngữ"
+                                        :class="{
+                                            'is-invalid': errors.ma != null,
+                                        }"
                                         pattern="[N][V][0-9]{3}"
                                         required
                                     />
-                                    <div class="invalid-feedback">
-                                        Đang trống hoặc mã không đúng (ví dụ:
-                                        NV001)
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.ma != null"
+                                    >
+                                        {{ errors.ma }}
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -109,12 +115,17 @@
                                         id="name"
                                         name="name"
                                         v-model="name"
-                                        placeholder="Tên nhà xuất bản"
-                                        value=""
+                                        placeholder="Tên nhà xuất bản "
+                                        :class="{
+                                            'is-invalid': errors.name != null,
+                                        }"
                                         required
                                     />
-                                    <div class="invalid-feedback">
-                                        Không được bỏ trống tên nhân viên
+                                    <div
+                                        class="invalid-feedback"
+                                        v-if="errors.name != null"
+                                    >
+                                        {{ errors.name }}
                                     </div>
                                 </div>
                                 <div class="form-group mb-4">
@@ -161,30 +172,38 @@
 </template>
 <script>
 import axios from "axios";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 export default {
     data() {
         return {
-            ma: '',
-            name: '',
-            description: '',
+            ma: "",
+            name: "",
+            description: "",
+            errors: [],
         };
     },
     methods: {
         formSubmit() {
-
-            axios
-                .post(`/api/admin/addpublisher`, {
-                    ma: this.ma, 
-                    name: this.name, 
-                    description: this.description})
-                .then( (response)  => {
-                    swal("Thêm thành công!", "", "success");
-
-                })
-                .catch(function (error) {
-                    onsole.log(error);
-                });
+            this.errors = [];
+            if (this.ma == "") {
+                this.errors.ma = " Chưa nhập mã nhà sản xuất";
+            }
+            if (this.name == "") {
+                this.errors.name = " Chưa nhập tên nhà xuất bản";
+            } else {
+                axios
+                    .post(`/api/admin/addpublisher`, {
+                        ma: this.ma,
+                        name: this.name,
+                        description: this.description,
+                    })
+                    .then((response) => {
+                        swal("Thêm thành công!", "", "success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         },
     },
 };

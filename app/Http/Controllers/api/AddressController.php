@@ -27,8 +27,12 @@ class AddressController extends Controller
     public function state()
     {
         //
+        $dataProvience['id'] = '%%';
         $Search_term = request('id','%%');
-        $data = State::orderBy('_name')->where('_province_id','like', $Search_term)->get();
+        if($Search_term != '%%'){
+            $dataProvience = Province::where('_name','like', $Search_term)->first();
+        }
+        $data = State::orderBy('_name')->where('_province_id','like', $dataProvience['id'])->get();
         return $data;
     }
     /**

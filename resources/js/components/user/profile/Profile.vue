@@ -47,7 +47,8 @@
                                                     $route.name === 'profile',
                                             },
                                         ]"
-                                        :to="{ name: 'profile' }" class="nav-link"
+                                        :to="{ name: 'profile' }"
+                                        class="nav-link"
                                         ><i class="fa fa-user"></i>Tài khoản của
                                         tôi</router-link
                                     >
@@ -55,12 +56,14 @@
                                         :class="[
                                             {
                                                 active:
-                                                    $route.name === 'checkorder',
+                                                    $route.name ===
+                                                    'checkorder',
                                             },
                                         ]"
                                         :to="{ name: 'checkorder' }"
                                         class="nav-link"
-                                        ><i class="fa fa-list"></i>Đơn hàng</router-link
+                                        ><i class="fa fa-list"></i>Đơn
+                                        hàng</router-link
                                     ><a
                                         href="customer-wishlist.html"
                                         class="nav-link"
@@ -193,6 +196,7 @@
                                             }"
                                             class="form-control"
                                             v-model="email"
+                                            readonly
                                         />
                                         <div
                                             class="invalid-feedback"
@@ -204,7 +208,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="address">Address</label>
+                                        <label for="address">Dịa chỉ</label>
                                         <input
                                             :class="{
                                                 'is-invalid':
@@ -226,8 +230,6 @@
                             </div>
                             <!-- /.row-->
                             <div class="row">
-                                
-
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="telephone"
@@ -255,13 +257,13 @@
                             <!-- /.row-->
                             <div class="row">
                                 <div class="col-md-12 text-center">
-                                    <button
+                                    <span
                                         type="submit"
                                         class="btn btn-primary"
                                         @click="checkForm"
                                     >
                                         <i class="fa fa-save"></i> Thay đổi
-                                    </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -299,8 +301,7 @@ export default {
             confirmpasswork: "",
         };
     },
-    watch: {
-    },
+    watch: {},
     mounted() {
         if (localStorage.usertoken.length != 0) {
             this.getUser();
@@ -309,7 +310,6 @@ export default {
     methods: {
         checkForm: function (e) {
             this.errors = [];
-
             if (!this.firstname) {
                 this.errors.firstname = "Họ đang trống";
             }
@@ -325,55 +325,23 @@ export default {
             if (!this.address) {
                 this.errors.address = "Địa chỉ đang trống";
             }
-            if (!this.province_id) {
-                this.errors.province = "Chưa chọn tỉnh thành phố";
-            }
-            if (!this.state_id) {
-                this.errors.state = "Chưa chọn quận huyện";
-            }
             if (
                 this.firstname != null &&
                 this.lastname != null &&
                 this.address != null &&
-                this.province_id != null &&
-                this.state_id != null &&
                 this.telephone != null &&
                 this.email != null
             ) {
-                var tamp = Math.floor(Math.random() * 1000000000);
-                console.log(this.dataUser.user.id);
                 axios
-                    .post(`/api/user/order`, {
-                        order_number: tamp.toString(),
+                    .post("/api/admin/editAccount/" + this.email, {
                         firstname: this.firstname,
                         lastname: this.lastname,
-                        email: this.email,
-                        total: this.total,
-                        user_id: this.dataUser.user.id,
-                        page_number: this.page_number,
                         address: this.address,
                         telephone: this.telephone,
-                        discount: 0,
-                        status: "new",
                     })
                     .then((response) => {
-                        this.carts.forEach((value, index) => {
-                            // console.log(parseInt(value.quatity) * parseInt(value.price));
-                            axios
-                                .post("/api/user/order_details", {
-                                    order_id: tamp,
-                                    product_id: value.ma,
-                                    price: value.price,
-                                    discount: 0,
-                                    quantity: value.quatity,
-                                })
-                                .then((response) => {})
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
-                        });
-                        localStorage.removeItem("cart")
-                        swal("Thêm thành công!", "", "success");
+                        swal("Cập nhật thành công!", "", "success");
+                        this.getUser();
                     })
                     .catch(function (error) {
                         console.log(error);
